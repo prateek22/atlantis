@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'django_cassandra_engine',
+    'enroll.apps.EnrollConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -77,7 +79,21 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    },
+    # 'cassandra': {
+    #     'ENGINE': 'django_cassandra_engine',
+    #     'NAME': BASE_DIR / 'db',
+    #     'TEST_NAME': 'test_db',
+    #     'HOST': '127.0.0.1:9042',
+    #     'USER': 'cassandra',
+    #     'PASSWORD': 'cassandra01',
+    #     'OPTIONS': {
+    #         'replication': {
+    #             'strategy_class': 'SimpleStrategy',
+    #             'replication_factor': 1
+    #         }
+    #     }
+    # }
 }
 
 
