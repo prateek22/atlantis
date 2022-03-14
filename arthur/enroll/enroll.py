@@ -62,7 +62,7 @@ class Enrollment():
     host = None
 
     def __init__(self, tenant_id, host_system_id):
-        self.tenant = tenant_id
+        self.tenant_id = tenant_id
         self.host_system_id = host_system_id
         self.host = Host.objects(tenant_id=self.tenant_id, host_system_id=self.host_system_id)
         if self.host:
