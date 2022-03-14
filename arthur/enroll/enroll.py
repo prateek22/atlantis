@@ -81,7 +81,7 @@ class Enrollment():
             host_hash = binascii.hexlify(hashlib.pbkdf2_hmac('sha256', encoded_secret, salt, 10000)).decode()
             #print(host_hash.decode('ascii'))
             self.host = Host(tenant_id=self.tenant_id, host_system_id=self.host_system_id, host_os=host_os, host_arch=host_arch, host_secret=encoded_secret_string, host_hash=host_hash)
-            #self.host.save()
+            self.host.save()
             return encoded_secret_string
 
     def generate_host_secret(self):
