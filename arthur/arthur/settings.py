@@ -81,20 +81,21 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     },
-    # 'cassandra': {
-    #     'ENGINE': 'django_cassandra_engine',
-    #     'NAME': BASE_DIR / 'db',
-    #     'TEST_NAME': 'test_db',
-    #     'HOST': '127.0.0.1:9042',
-    #     'USER': 'cassandra',
-    #     'PASSWORD': 'cassandra01',
-    #     'OPTIONS': {
-    #         'replication': {
-    #             'strategy_class': 'SimpleStrategy',
-    #             'replication_factor': 1
-    #         }
-    #     }
-    # }
+    'cassandra': {
+        'ENGINE': 'django_cassandra_engine',
+        'NAME': 'db',
+        'TEST_NAME': 'test_db',
+        'HOST': '172.17.0.2',
+        'PORT': 9042,
+        'USER': 'cassandra',
+        'PASSWORD': 'cassandra',
+        'OPTIONS': {
+            'replication': {
+                'strategy_class': 'SimpleStrategy',
+                'replication_factor': 1
+            }
+        }
+    }
 }
 
 
