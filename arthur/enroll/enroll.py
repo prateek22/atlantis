@@ -5,35 +5,6 @@ from django.core.validators import RegexValidator
 from .models import Host
 import secrets, hashlib, base64, os, binascii
 
-# class NameWidget(forms.MultiWidget):
-
-#     def __init__(self, attrs=None):
-#         super().__init__([
-#             forms.TextInput()
-#         ], attrs)
-
-#     def decompress(self, value):
-#         if value:
-#             return value.split(' ')
-#         return ['', '']
-
-# class NameField(forms.MultiValueField):
-
-#     widget = NameWidget
-
-#     def __init__(self, *args, **kwargs):
-
-#         fields = (
-#             forms.CharField(validators=[
-#                 RegexValidator(r'[a-zA-Z]+', 'Enter a valid first name (only letters)')
-#             ]),
-#         )
-
-#         super().__init__(fields, *args, **kwargs)
-
-#     def compress(self, data_list):
-#         return f'{data_list[0]} {data_list[1]}'
-
 
 class EnrollForm(forms.Form):
     tenant_id = forms.CharField(widget=forms.HiddenInput(), initial='123e4567-e89b-12d3-a456-426614174000')
@@ -65,11 +36,10 @@ class Enrollment():
         self.tenant_id = tenant_id
         self.host_system_id = host_system_id
         self.host = Host.objects(tenant_id=self.tenant_id, host_system_id=self.host_system_id)
-        if self.host:
-            self.host = self.host[0]
 
     def generate_host(self, host_os, host_arch):
-        if self.host != None:
+        if self.host.exists():
+            self.host = self.host[0]
             return self.host.host_secret
         else:
             m = hashlib.sha256()
