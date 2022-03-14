@@ -17,6 +17,9 @@ class TenantMember(DjangoCassandraModel):
     member_username = columns.Text(required=True)
     member_password = columns.Text(required=True)
 
+    class Meta:
+        get_pk_field = 'member_id'
+
 class Host(DjangoCassandraModel):
     host_id = columns.UUID(primary_key=True, default=uuid.uuid4, partition_key=True)
     tenant_id = columns.UUID(required=True,partition_key=True, index=True) #columns.UserDefinedType(user_type=Tenant)
@@ -25,6 +28,9 @@ class Host(DjangoCassandraModel):
     host_arch = columns.Text(required=True)
     host_secret = columns.Text(required=True)
     host_hash = columns.Text(required=True)
+
+    class Meta:
+        get_pk_field = 'host_id'
 
 # class ExampleModel(DjangoCassandraModel):
 #     example_id   = columns.UUID(primary_key=True, default=uuid.uuid4)
