@@ -2,13 +2,14 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
 from django import forms
 from django.core.validators import RegexValidator
-from .models import Host
-import secrets, hashlib, base64, os, binascii
+from .models import EnrolledNode
+import secrets, hashlib, base64, os, binascii, json
+from passlib.hash import pbkdf2_sha256
 
 
 class EnrollForm(forms.Form):
     tenant_id = forms.CharField(widget=forms.HiddenInput(), initial='123e4567-e89b-12d3-a456-426614174000')
-    host_system_id = forms.CharField(validators=[RegexValidator(r'[a-zA-Z]+', 'Enter a valid first name (only letters)')])
+    system_id = forms.CharField(validators=[RegexValidator(r'[a-zA-Z]+', 'Enter a valid first name (only letters)')])
     os = forms.ChoiceField(choices=[('windows', 'Windows'), ('linux', 'Linux')])
     arch = forms.ChoiceField(choices=[('x86', 'x86'), ('x64', 'x64')])
 
@@ -21,7 +22,7 @@ class EnrollForm(forms.Form):
 
         self.helper.layout = Layout(
             'tenant_id',
-            'host_system_id',
+            'system_id',
             'os',
             'arch',
             Submit('submit', 'Submit', css_class='btn-success')
@@ -29,31 +30,63 @@ class EnrollForm(forms.Form):
 
 class Enrollment():
     tenant_id = None
-    host_system_id = None
-    host = None
+    node_system_id = None
+    node = None
 
-    def __init__(self, tenant_id, host_system_id):
+    def __init__(self, tenant_id, node_system_id):
         self.tenant_id = tenant_id
-        self.host_system_id = host_system_id
-        self.host = Host.objects(tenant_id=self.tenant_id, host_system_id=self.host_system_id)
+        self.node_system_id = node_system_id
+        self.node = EnrolledNode.objects(tenant_id=self.tenant_id, node_system_id=self.node_system_id)
 
-    def generate_host(self, host_os, host_arch):
-        if self.host.exists():
-            self.host = self.host[0]
-            return self.host.host_secret
+    def generate_node(self, node_os, node_arch):
+        if self.node.exists():
+            self.node = self.node[0]
+            return self.node.node_secret
         else:
             m = hashlib.sha256()
             salt = os.urandom(32)
-            secret = "host_system_id={}, tenant_id={}, secret=".format(self.host_system_id, self.tenant_id) + self.generate_host_secret()
+            secret = '{"node_system_id":{}, "tenant_id":{}, "secret":'.format(self.node_system_id, self.tenant_id) + self.generate_node_secret() + '}'
             encoded_secret = base64.b64encode(secret.encode())
             encoded_secret_string = encoded_secret.decode('utf-8')
-            print(type(encoded_secret))
-            host_hash = binascii.hexlify(hashlib.pbkdf2_hmac('sha256', encoded_secret, salt, 10000)).decode()
+            #print(type(encoded_secret))
+            node_hash = pbkdf2_sha256.hash(encoded_secret_string)
             #print(host_hash.decode('ascii'))
-            self.host = Host(tenant_id=self.tenant_id, host_system_id=self.host_system_id, host_os=host_os, host_arch=host_arch, host_secret=encoded_secret_string, host_hash=host_hash)
-            self.host.save()
+            self.node = EnrolledNode(tenant_id=self.tenant_id, node_system_id=self.node_system_id, node_os=node_os, node_arch=node_arch, node_secret=encoded_secret_string, node_hash=node_hash)
+            self.node.save()
             return encoded_secret_string
 
-    def generate_host_secret(self):
+    def generate_node_secret(self):
         secret = secrets.token_hex(16)
         return secret
+
+    def update_node_address(self, address):
+
+        self.node.node_address = address
+        self.node.save()
+
+    def validate_enroll_secret(self, enroll_secret):
+        decoded_secret = base64.b64decode(enroll_secret.encode())
+        secret = json.loads(decoded_secret.decode())
+        node = EnrolledNode.objects(tenant_id=secret['tenant_id'], node_system_id=secret['node_system_id'])
+        if node:
+            self.node = node[0]
+        if not pbkdf2_sha256.verify(enroll_secret, self.node.node_hash):
+            return None
+        else:
+            return self.node
+
+    def validate_node(self, address, node_id, enroll_secret):
+
+        node = EnrolledNode.objects(address=address, node_id=node_id)
+        if node:
+            self.node = node[0]
+
+        if node and not pbkdf2_sha256.verify(enroll_secret, node.node_hash):
+            return None
+        else:
+            return self.node
+
+
+    def get_enrolled_nodes():
+
+        return [row.address for row in EnrolledNode.objects.all()]

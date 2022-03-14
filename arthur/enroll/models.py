@@ -1,3 +1,4 @@
+from enum import unique
 import uuid
 from cassandra.cqlengine import columns
 from cassandra.cqlengine.models import Model
@@ -20,17 +21,18 @@ class TenantMember(DjangoCassandraModel):
     class Meta:
         get_pk_field = 'member_id'
 
-class Host(DjangoCassandraModel):
-    host_id = columns.UUID(primary_key=True, default=uuid.uuid4, partition_key=True)
+class EnrolledNode(DjangoCassandraModel):
+    node_id = columns.UUID(primary_key=True, default=uuid.uuid4, partition_key=True)
     tenant_id = columns.UUID(required=True,partition_key=True, index=True) #columns.UserDefinedType(user_type=Tenant)
-    host_system_id = columns.Text(required=True, index=True)
-    host_os = columns.Text(required=True)
-    host_arch = columns.Text(required=True)
-    host_secret = columns.Text(required=True)
-    host_hash = columns.Text(required=True)
+    node_system_id = columns.Text(required=True, index=True)
+    node_os = columns.Text(required=True)
+    node_arch = columns.Text(required=True)
+    node_secret = columns.Text(required=True)
+    node_hash = columns.Text(required=True)
+    node_address = columns.Text(required=True, index=True)
 
     class Meta:
-        get_pk_field = 'host_id'
+        get_pk_field = 'node_id'
 
 # class ExampleModel(DjangoCassandraModel):
 #     example_id   = columns.UUID(primary_key=True, default=uuid.uuid4)
