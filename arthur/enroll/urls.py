@@ -1,7 +1,6 @@
 from django.urls import path
 
-from arthur.enroll.views import TenantListView
-from arthur.enroll.views.stats_views import TenantMemberListView
+from .views.stats_views import TenantMemberListView, TenantListView
 
 from . import views
 
