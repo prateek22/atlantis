@@ -34,8 +34,28 @@ class EnrolledNode(DjangoCassandraModel):
     class Meta:
         get_pk_field = 'node_id'
 
-# class ExampleModel(DjangoCassandraModel):
-#     example_id   = columns.UUID(primary_key=True, default=uuid.uuid4)
-#     example_type = columns.Integer(index=True)
-#     created_at   = columns.DateTime()
-#     description  = columns.Text(required=False)
+class alerts(DjangoCassandraModel):
+
+    src_ip = columns.Text(max_length=50)
+    src_port = columns.Text(max_length=50)
+    dest_ip = columns.Text(max_length=50)
+    dest_port = columns.Text(max_length=50)
+    uid = columns.Text(max_length=50)
+
+
+    def __str__(self):
+        return "{}:{} => {}:{}".format(self.src_ip, self.src_port, self.dest_ip, self.dest_port)
+        
+class live_query(DjangoCassandraModel):
+    query = columns.Text(max_length=250)
+    query_id = columns.Text(max_length=50)
+    
+    def __str__(self):
+      return self.query_id
+      
+class dist_query_result(DjangoCassandraModel):
+    result_query = columns.Text(max_length=250)
+    node_keys = columns.Text(max_length=50)
+    
+    def __str__(self):
+      return self.node_keys

@@ -1,6 +1,6 @@
 # alert functions
 
-from api.models import alerts
+from .models import alerts
 from .osqueryResponses import *
 from .settings import *
 
