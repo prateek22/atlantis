@@ -18,4 +18,6 @@ urlpatterns = [
     path('alert', views.alert, name='alert'),
     path('tenantList', TenantListView.as_view(), name='tenantList'),
     path('tenantMemberList', TenantMemberListView.as_view(), name='tenantMemberList'),
+    path('addTenant', views.addTenant, name='addTenant'),
+    path('addTenantMember', views.addTenantMember, name='addTenantMember'),
 ]
