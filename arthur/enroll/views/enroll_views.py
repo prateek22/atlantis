@@ -4,8 +4,9 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 # App imports
-from ..models import Tenant
-from ..enroll import EnrollForm, Enrollment
+from ..models import Tenant, alerts
+from ..forms.enrollForm import EnrollForm
+from ..enroll import Enrollment
 from ..osqueryResponses import *
 from ..settings import *
 from ..alerts import *
@@ -128,64 +129,30 @@ def logger(request):
 
     return JsonResponse(EMPTY_RESPONSE)
 
-
 @csrf_exempt
-def distributed_read(request):
+def alert(request):
 
     data = request.body.decode('utf-8')
     json_data = json.loads(data)
-    address = request.META.get('REMOTE_ADDR')
-    node_id = json_data.get('node_key')
-    enroll_secret = json_data.get('enroll_secret')
+    src_ip = json_data.get('src_ip')
+    src_port = json_data.get('src_port')
+    dest_ip = json_data.get('dest_ip')
+    dest_port = json_data.get('dest_port')
+    uid = json_data.get('alert_uid')
+    secret = json_data.get('secret')
+    enrolled_nodes = Enrollment.get_enrolled_nodes()
 
-    host = Enrollment()
-    node = host.validate_node(address, node_id, enroll_secret)
-    if not node:
-        return JsonResponse(FAILED_ENROLL_RESPONSE)
+    if not secret == LOGSTASH_SECRET or \
+            (not src_ip in enrolled_nodes and not dest_ip in enrolled_nodes):
+        return None
 
-    query = deepcopy(DIST_QUERY)
-    query = check_alerts(address, query)
+    alerts.objects.all().delete()
 
-    if not len(query['queries']):
-        return JsonResponse(EMPTY_RESPONSE)
+    alert = alerts(src_ip=src_ip, src_port=src_port, dest_ip=dest_ip, dest_port=dest_port, uid=uid)
+    alert.save()
 
-    return JsonResponse(query)
-
-@csrf_exempt
-def distributed_write(request):
-
-    data = request.body.decode('utf-8')
-    json_data = json.loads(data)
-    address = request.META.get('REMOTE_ADDR')
-    results = json_data.get('queries')
-    if results:
-        queries = results.keys()
-    else:
-        queries = []
-
-
-    node_id = json_data.get('node_key')
-    enroll_secret = json_data.get('enroll_secret')
-
-    host = Enrollment()
-    node = host.validate_node(address, node_id, enroll_secret)
-    if not node:
-        return JsonResponse(FAILED_ENROLL_RESPONSE)
-
-    with open(LOG_OUTPUT_FILE, 'a') as f:
-        for query in queries:
-            if results[query] and len(results[query][0]):
-
-                result_type = query.split('|')[0]
-                direction = query.split('|')[1]
-                uid = query.split('|')[2]
-
-                if result_type == 'alert':
-                    print(results[query][0])
-                    update_elastic(direction, uid, results[query][0])
-                else:
-                    for result in results[query]:
-                        result['address'] = address
-                        f.write(json.dumps(result) + '\n')
+    print(alerts.objects.all())
 
     return JsonResponse(EMPTY_RESPONSE)
+
+

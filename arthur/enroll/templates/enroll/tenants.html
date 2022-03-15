@@ -1,0 +1,10 @@
+<!-- {% extends "base.html" %} -->
+
+{% block content %}
+    <h2>Tenants</h2>
+    <ul>
+        {% for tenant in object_list %}
+            <li>{{ tenant.tenant_name }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
