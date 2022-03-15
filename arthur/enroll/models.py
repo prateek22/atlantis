@@ -40,7 +40,7 @@ class alerts(DjangoCassandraModel):
     src_port = columns.Text(max_length=50)
     dest_ip = columns.Text(max_length=50)
     dest_port = columns.Text(max_length=50)
-    uid = columns.Text(max_length=50)
+    uid = columns.UUID(primary_key=True, default=uuid.uuid4, partition_key=True)
 
 
     def __str__(self):
@@ -48,14 +48,14 @@ class alerts(DjangoCassandraModel):
         
 class live_query(DjangoCassandraModel):
     query = columns.Text(max_length=250)
-    query_id = columns.Text(max_length=50)
+    query_id = columns.UUID(primary_key=True, default=uuid.uuid4, partition_key=True)
     
     def __str__(self):
       return self.query_id
       
 class dist_query_result(DjangoCassandraModel):
     result_query = columns.Text(max_length=250)
-    node_keys = columns.Text(max_length=50)
+    node_keys = columns.UUID(primary_key=True, default=uuid.uuid4, partition_key=True)
     
     def __str__(self):
       return self.node_keys
