@@ -14,6 +14,9 @@ from ..alerts import *
 import zipfile, json
 from copy import deepcopy
 
+def index(request):
+    return render(request, 'enroll/index.html')
+
 # Endpoint for registering new nodes
 def register(request):
     if request.method == 'GET':
