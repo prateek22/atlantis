@@ -14,3 +14,11 @@
 # python3 manage.py sync_cassandra
 # python3 manage.py runserver_plus --cert-file ../../certs/local.crt --key-file ../../certs/local.key.pem --reloader-interval 2 0.0.0.0:8000
 ```
+
+# Installing osquery on CentOS
+```
+# curl -L https://pkg.osquery.io/rpm/GPG | sudo tee /etc/pki/rpm-gpg/RPM-GPG-KEY-osquery
+# sudo yum-config-manager --add-repo https://pkg.osquery.io/rpm/osquery-s3-rpm.repo
+# sudo yum-config-manager --enable osquery-s3-rpm-repo
+# sudo yum install osquery
+```

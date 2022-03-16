@@ -10,6 +10,7 @@ from ..settings import *
 
 #Miscellaneous imports
 from passlib.hash import pbkdf2_sha256
+import os
 
 # Endpoint for registering new nodes
 def addTenantMember(request):
@@ -35,7 +36,7 @@ def addTenantMember(request):
         tenantMember = TenantMember(member_name=member_name, member_username=member_username, member_password=member_password_hash, tenant_id=tenant.tenant_id)
         tenantMember.save()
         context = {"message": 'Tenant member {} added successfully!!'.format(member_username)}
-        return render(request, 'miscellaneous/success.html', context)
+        return render(request, 'enroll/miscellaneous/success.html', context)
 
 def addTenant(request):
     if request.method == 'GET':
@@ -51,5 +52,7 @@ def addTenant(request):
             raise HttpResponseBadRequest("Invalid details!!")
         tenant = Tenant(tenant_name=tenant_name, tenant_domain=tenant_domain)
         tenant.save()
+        os.system("../scripts/generate_new_cert.sh " + tenant_domain)
+        os.system("echo '127.0.0.1   " + tenant_domain + ".edr.api' >> /etc/hosts")
         context = {"message": 'Tenant {} added successfully!!'.format(tenant_name)}
-        return render(request, 'miscellaneous/success.html', context)
+        return render(request, 'enroll/miscellaneous/success.html', context)

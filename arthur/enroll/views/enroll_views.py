@@ -72,6 +72,7 @@ def enroll(request):
     if request.method == 'POST':
         data = request.body.decode('utf-8')
         json_data = json.loads(data)
+        print(json_data)
         enroll_secret = json_data.get('enroll_secret')
         address = request.META.get('REMOTE_ADDR')
         host = Enrollment()
@@ -91,6 +92,7 @@ def config(request):
     if request.method == 'POST':
         data = request.body.decode('utf-8')
         json_data = json.loads(data)
+        print(json_data)
         address = request.META.get('REMOTE_ADDR')
         node_id = json_data.get('node_key')
         enroll_secret = json_data.get('enroll_secret')
@@ -108,6 +110,7 @@ def logger(request):
 
     data = request.body.decode('utf-8')
     json_data = json.loads(data)
+    print(json_data)
     address = request.META.get('REMOTE_ADDR')
     results = json_data.get('data')
     log_type = json_data.get('log_type')
