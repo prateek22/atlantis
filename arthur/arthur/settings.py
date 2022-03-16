@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-ol2b53l*+p+dxm8+)4i5l(d10vh)uim%i+tgylaken$!wm%2s_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [".edr.api"]
 
 
 # Application definition

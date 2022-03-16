@@ -19,4 +19,7 @@ class TenantMemberListView(ListView):
     template_name = 'enroll/administer/tenantMembers.html'
 
     def get_queryset(self):
-        return TenantMember.objects.filter(tenant_id=self.kwargs['tenant_id'])
+        print(self.args)
+        print(self.kwargs)
+        print(self.request)
+        return TenantMember.objects.all()#filter(tenant_id=self.kwargs['tenant_id'])
