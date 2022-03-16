@@ -29,7 +29,7 @@ class EnrolledNode(DjangoCassandraModel):
     node_arch = columns.Text(required=True)
     node_secret = columns.Text(required=True)
     node_hash = columns.Text(required=True)
-    node_address = columns.Text(required=True, index=True)
+    node_address = columns.Text(required=True, index=True, default='127.0.0.1')
 
     class Meta:
         get_pk_field = 'node_id'
