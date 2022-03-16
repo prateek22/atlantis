@@ -40,21 +40,21 @@ def register(request):
         with open(tenant.tenant_name+'_'+node_system_id+'.secret', 'x') as f:
             f.write(secret)
         osquery_flag_string = """--tls_hostname="""+tenant.tenant_domain+""".edr.api:8000
-                --tls_server_certs=/root/Capstone_project/EDR/capstone/certs/ca.pem
-                --enroll_secret_path=/root/Capstone_project/EDR/capstone/"""+tenant.tenant_name+'_'+node_system_id+""".secret
-                --enroll_tls_endpoint=/osquery/enroll
+                --tls_server_certs=./certs/ca.pem
+                --enroll_secret_path=../"""+tenant.tenant_name+'_'+node_system_id+""".secret
+                --enroll_tls_endpoint=/enroll/enroll
                 --host_identifier=uuid
-                --distributed_tls_read_endpoint=/osquery/distributed_read
-                --distributed_tls_write_endpoint=/osquery/distributed_write
+                --distributed_tls_read_endpoint=/enroll/distributed_read
+                --distributed_tls_write_endpoint=/enroll/distributed_write
                 --disable_distributed=false
                 --distributed_interval=5
                 --distributed_plugin=tls
 
                 --config_plugin=tls
                 #--config_refresh=5
-                --config_tls_endpoint=/osquery/config
+                --config_tls_endpoint=/enroll/config
                 --logger_plugin=tls
-                --logger_tls_endpoint=/osquery/logger"""
+                --logger_tls_endpoint=/enroll/logger"""
         with open(tenant.tenant_name+'_'+node_system_id+'.flags', 'x') as f:
             f.write(osquery_flag_string)
         zf = zipfile.ZipFile(tenant.tenant_name+'_'+node_system_id+".zip", 'x')

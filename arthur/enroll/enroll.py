@@ -24,7 +24,7 @@ class Enrollment():
         else:
             m = hashlib.sha256()
             salt = os.urandom(32)
-            secret = '{"node_system_id":' + self.node_system_id + ', "tenant_id": ' + self.tenant_id + ', "secret":'+ self.generate_node_secret() + '}'
+            secret = '{"node_system_id":"' + self.node_system_id + '", "tenant_id": "' + self.tenant_id + '", "secret":"'+ self.generate_node_secret() + '"}'
             encoded_secret = base64.b64encode(secret.encode())
             encoded_secret_string = encoded_secret.decode('utf-8')
             #print(type(encoded_secret))
