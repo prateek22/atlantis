@@ -15,7 +15,7 @@ from passlib.hash import pbkdf2_sha256
 def addTenantMember(request):
     if request.method == 'GET':
         form = TenantMemberForm()
-        return render(request, 'administer/add_tenant_member.html', {'form': form})
+        return render(request, 'enroll/administer/add_tenant_member.html', {'form': form})
     elif request.method == 'POST':
         form = TenantMemberForm(request.POST)
         if form.is_valid():
@@ -40,7 +40,7 @@ def addTenantMember(request):
 def addTenant(request):
     if request.method == 'GET':
         form = TenantForm()
-        return render(request, 'administer/add_tenant.html', {'form': form})
+        return render(request, 'enroll/administer/add_tenant.html', {'form': form})
     elif request.method == 'POST':
         form = TenantForm(request.POST)
         if form.is_valid():
