@@ -11,10 +11,12 @@ from ..models import Tenant, TenantMember
 class TenantListView(ListView):
     model = Tenant
     context_object_name = 'List of All Tenants'
+    template_name = 'administer/tenants.html'
 
 class TenantMemberListView(ListView):
     model = TenantMember
     context_object_name = 'Active Tenant Members'
+    template_name = 'administer/tenantMembers.html'
 
     def get_queryset(self):
         return TenantMember.objects.filter(tenant_id=self.kwargs['tenant_id'])
