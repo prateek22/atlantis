@@ -11,11 +11,6 @@ class Enrollment():
     node_system_id = None
     node = None
 
-    def __init__(self):
-        self.tenant_id = None
-        self.node_system_id = None
-        self.node = None
-
     def __init__(self, tenant_id, node_system_id):
         self.tenant_id = tenant_id
         self.node_system_id = node_system_id
