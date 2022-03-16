@@ -42,6 +42,7 @@ class Enrollment():
 
         self.node.node_address = address
         self.node.save()
+        return self.node.node_id
 
     def validate_enroll_secret(self, enroll_secret):
         decoded_secret = base64.b64decode(enroll_secret.encode())
