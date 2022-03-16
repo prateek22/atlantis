@@ -41,7 +41,7 @@ def register(request):
             f.write(secret)
         osquery_flag_string = """--tls_hostname="""+tenant.tenant_domain+""".edr.api:8000
                 --tls_server_certs=/root/Capstone_project/EDR/capstone/certs/ca.pem
-                --enroll_secret_path=/root/Capstone_project/EDR/capstone/"""+tenant.tenant_name+'_'+host_system_id+""".secret
+                --enroll_secret_path=/root/Capstone_project/EDR/capstone/"""+tenant.tenant_name+'_'+node_system_id+""".secret
                 --enroll_tls_endpoint=/osquery/enroll
                 --host_identifier=uuid
                 --distributed_tls_read_endpoint=/osquery/distributed_read
