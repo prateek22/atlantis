@@ -97,7 +97,7 @@ def config(request):
         node_id = json_data.get('node_key')
         enroll_secret = json_data.get('enroll_secret')
 
-        host = Enrollment()
+        host = Enrollment(tenant_id=None, node_system_id=None)
         node = host.validate_node(address, node_id, enroll_secret)
         if not node:
             return JsonResponse(FAILED_ENROLL_RESPONSE)
@@ -117,7 +117,7 @@ def logger(request):
     node_id = json_data.get('node_key')
     enroll_secret = json_data.get('enroll_secret')
 
-    host = Enrollment()
+    host = Enrollment(tenant_id=None, node_system_id=None)
     node = host.validate_node(address, node_id, enroll_secret)
     if not node:
         return JsonResponse(FAILED_ENROLL_RESPONSE)

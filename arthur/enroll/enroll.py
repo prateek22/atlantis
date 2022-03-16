@@ -27,7 +27,7 @@ class Enrollment():
             secret = '{"node_system_id":"' + self.node_system_id + '", "tenant_id": "' + self.tenant_id + '", "secret":"'+ self.generate_node_secret() + '"}'
             encoded_secret = base64.b64encode(secret.encode())
             encoded_secret_string = encoded_secret.decode('utf-8')
-            #print(type(encoded_secret))
+            print(type(encoded_secret))
             node_hash = pbkdf2_sha256.hash(encoded_secret_string)
             #print(host_hash.decode('ascii'))
             self.node = EnrolledNode(tenant_id=self.tenant_id, node_system_id=self.node_system_id, node_os=node_os, node_arch=node_arch, node_secret=encoded_secret_string, node_hash=node_hash)
