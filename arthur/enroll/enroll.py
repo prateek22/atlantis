@@ -62,10 +62,10 @@ class Enrollment():
         else:
             return None
 
-        if node and not pbkdf2_sha256.verify(enroll_secret, self.node.node_hash):
-            return None
-        else:
-            return self.node
+        # if node and not pbkdf2_sha256.verify(enroll_secret, self.node.node_hash):
+        #     return None
+        # else:
+        #     return self.node
 
 
     def get_enrolled_nodes():
