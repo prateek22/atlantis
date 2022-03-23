@@ -143,7 +143,8 @@ def alert(request):
     dest_port = json_data.get('dest_port')
     uid = json_data.get('alert_uid')
     secret = json_data.get('secret')
-    enrolled_nodes = Enrollment.get_enrolled_nodes()
+    host = Enrollment(tenant_id=None, node_system_id=None)
+    enrolled_nodes = host.get_enrolled_nodes()
 
     if not secret == LOGSTASH_SECRET or \
             (not src_ip in enrolled_nodes and not dest_ip in enrolled_nodes):
