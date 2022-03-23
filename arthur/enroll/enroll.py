@@ -40,8 +40,7 @@ class Enrollment():
 
     def update_node_address(self, address):
 
-        self.node.node_address = address
-        self.node.save()
+        self.node.update(node_address = address)
         return self.node.node_id
 
     def validate_enroll_secret(self, enroll_secret):
@@ -57,9 +56,11 @@ class Enrollment():
 
     def validate_node(self, address, node_id, enroll_secret):
 
-        node = EnrolledNode.objects(address=address, node_id=node_id)
+        node = EnrolledNode.objects(node_address=address, node_id=node_id)
         if node:
             self.node = node[0]
+        else:
+            return None
 
         if node and not pbkdf2_sha256.verify(enroll_secret, node.node_hash):
             return None
@@ -69,4 +70,4 @@ class Enrollment():
 
     def get_enrolled_nodes():
 
-        return [row.address for row in EnrolledNode.objects.all()]
+        return [row.node_address for row in EnrolledNode.objects.all()]
