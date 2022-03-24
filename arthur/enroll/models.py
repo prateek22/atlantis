@@ -11,6 +11,7 @@ class Tenant(Model):
     tenant_name = columns.Text(required=True, index=True)
     tenant_domain = columns.Text(required=True, index=True)
     tenant_schema = columns.Text(required=True)
+    _meta = ''
     #__type_name__ = 'Tenant'
 
 class TenantMember(Model):
@@ -19,6 +20,7 @@ class TenantMember(Model):
     member_name = columns.Text(required=True)
     member_username = columns.Text(required=True,index=True)
     member_password = columns.Text(required=True)
+    _meta = ''
 
     class Meta:
         get_pk_field = 'member_id'
@@ -32,6 +34,7 @@ class EnrolledNode(Model):
     node_secret = columns.Text(required=True)
     node_hash = columns.Text(required=True)
     node_address = columns.Text(required=True, index=True, default='127.0.0.1')
+    _meta = ''
 
     class Meta:
         get_pk_field = 'node_id'
