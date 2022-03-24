@@ -42,7 +42,6 @@ def register(request):
             node_system_id = form.cleaned_data['system_id']
             os = form.cleaned_data['os']
             arch = form.cleaned_data['arch']
-        print(tenant_id, node_system_id)
         #Tenant.__keyspace__ = "db"
         tenant = Tenant.objects(tenant_id=tenant_id)
         if tenant:
