@@ -31,7 +31,12 @@ def register(request):
         form = EnrollForm(tenant)
         return render(request, 'enroll/enroll.html', {'form': form})
     elif request.method == 'POST':
-        form = EnrollForm(request.POST)
+        tenant = Tenant.objects(tenant_domain=hostname_from_request(request))
+        if tenant:
+            tenant = tenant[0]
+        else:
+            return HttpResponseBadRequest("Invalid details!!")
+        form = EnrollForm(tenant, request.POST)
         if form.is_valid():
             tenant_id = form.cleaned_data['tenant_id']
             node_system_id = form.cleaned_data['system_id']
