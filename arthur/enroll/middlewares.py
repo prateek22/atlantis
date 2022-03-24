@@ -12,6 +12,6 @@ class TenantMiddleware:
         try:
             set_tenant_schema_for_request(request)
         except Exception:
-            return HttpResponseBadRequest("Invalid details!!")
+            return HttpResponseBadRequest("Failed to set the schema")
         response = self.get_response(request)
         return response
