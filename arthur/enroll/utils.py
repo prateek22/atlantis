@@ -9,7 +9,7 @@ def get_tenants_schema(hostname):
         return 'db'
     tenant = Tenant.objects(tenant_domain=hostname)
     if tenant:
-        return tenant.tenant_schema
+        return tenant[0].tenant_schema
     else:
         raise Exception("Invalid details!!")
 
