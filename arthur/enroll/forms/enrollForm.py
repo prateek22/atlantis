@@ -15,6 +15,10 @@ class EnrollForm(forms.Form):
 
         self.helper = FormHelper
         self.helper.form_method = 'post'
+        self.fields['tenant_id'] = forms.CharField(widget=forms.HiddenInput(), initial= self.args['tenant'].tenant_id)
+
+        print(self.args)
+        print(self.kwargs)
 
         self.helper.layout = Layout(
             'tenant_id',
