@@ -1,7 +1,7 @@
 # Django imports
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render
-from cassandra.cqlengine.management import create_keyspace_simple, sync_type
+from cassandra.cqlengine.management import create_keyspace_simple, sync_table
 
 # App imports
 from ..models import EnrolledNode, Tenant, TenantMember, alerts, dist_query_result, live_query
@@ -55,11 +55,11 @@ def addTenant(request):
         tenant.save()
         create_keyspace_simple(tenant_domain,replication_factor=1)
         #sync_type(ks_name=tenant_domain, type_model=Tenant)
-        sync_type(ks_name=tenant_domain, type_model=TenantMember)
-        sync_type(ks_name=tenant_domain, type_model=EnrolledNode)
-        sync_type(ks_name=tenant_domain, type_model=alerts)
-        sync_type(ks_name=tenant_domain, type_model=live_query)
-        sync_type(ks_name=tenant_domain, type_model=dist_query_result)
+        sync_table(ks_name=tenant_domain, model=TenantMember)
+        sync_table(ks_name=tenant_domain, model=EnrolledNode)
+        sync_table(ks_name=tenant_domain, model=alerts)
+        sync_table(ks_name=tenant_domain, model=live_query)
+        sync_table(ks_name=tenant_domain, model=dist_query_result)
         os.system("../scripts/generate_new_cert.sh " + tenant_domain)
         os.system("echo '127.0.0.1   " + tenant_domain + ".edr.api' >> /etc/hosts")
         context = {"message": 'Tenant {} added successfully!!'.format(tenant_name)}
