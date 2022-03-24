@@ -1,9 +1,10 @@
 # Django imports
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render
+from cassandra.cqlengine.management import create_keyspace_simple, sync_type
 
 # App imports
-from ..models import Tenant, TenantMember
+from ..models import EnrolledNode, Tenant, TenantMember, alerts, dist_query_result, live_query
 from ..forms.tenantForm import TenantForm
 from ..forms.tenantMemberForm import TenantMemberForm
 from ..settings import *
@@ -34,7 +35,7 @@ def addTenantMember(request):
             raise HttpResponseBadRequest("Invalid details!!")
         member_password_hash = pbkdf2_sha256.hash(member_password)
         tenantMember = TenantMember(member_name=member_name, member_username=member_username, member_password=member_password_hash, tenant_id=tenant.tenant_id)
-        tenantMember.save()
+        tenantMember.save().using(keyspace=tenant.tenant_domain)
         context = {"message": 'Tenant member {} added successfully!!'.format(member_username)}
         return render(request, 'enroll/miscellaneous/success.html', context)
 
@@ -52,6 +53,13 @@ def addTenant(request):
             raise HttpResponseBadRequest("Invalid details!!")
         tenant = Tenant(tenant_name=tenant_name, tenant_domain=tenant_domain)
         tenant.save()
+        create_keyspace_simple(tenant_domain,replication_factor=1)
+        #sync_type(ks_name=tenant_domain, type_model=Tenant)
+        sync_type(ks_name=tenant_domain, type_model=TenantMember)
+        sync_type(ks_name=tenant_domain, type_model=EnrolledNode)
+        sync_type(ks_name=tenant_domain, type_model=alerts)
+        sync_type(ks_name=tenant_domain, type_model=live_query)
+        sync_type(ks_name=tenant_domain, type_model=dist_query_result)
         os.system("../scripts/generate_new_cert.sh " + tenant_domain)
         os.system("echo '127.0.0.1   " + tenant_domain + ".edr.api' >> /etc/hosts")
         context = {"message": 'Tenant {} added successfully!!'.format(tenant_name)}
