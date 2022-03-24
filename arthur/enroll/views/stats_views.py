@@ -7,6 +7,7 @@ from django.views.generic import ListView
 from django.shortcuts import get_object_or_404
 
 from ..models import Tenant, TenantMember
+from ..utils import hostname_from_request
 
 class TenantListView(ListView):
     model = Tenant
@@ -22,4 +23,4 @@ class TenantMemberListView(ListView):
     template_name = 'enroll/administer/tenantMembers.html'
 
     def get_queryset(self):
-        return TenantMember.objects.all()#filter(tenant_id=self.kwargs['tenant_id'])
+        return TenantMember.objects.all().using(keyspace=hostname_from_request(self.request)) #filter(tenant_id=self.kwargs['tenant_id'])
