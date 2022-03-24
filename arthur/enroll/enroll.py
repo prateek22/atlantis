@@ -58,8 +58,11 @@ class Enrollment():
 
         node = EnrolledNode.objects(node_address=address, node_id=node_id)
         if node:
+            print(node[0])
             self.node = node[0]
         else:
+            print(address)
+            print(node_id)
             return None
 
         # if node and not pbkdf2_sha256.verify(enroll_secret, self.node.node_hash):
