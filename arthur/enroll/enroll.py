@@ -24,7 +24,7 @@ class Enrollment():
             self.node = EnrolledNode.objects(tenant_id=self.tenant_id, node_system_id=self.node_system_id)
 
     def generate_node(self, node_os, node_arch):
-        if self.node.if_exists():
+        if self.node.if_exists:
             self.node = self.node[0]
             return self.node.node_secret
         else:
