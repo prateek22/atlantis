@@ -33,6 +33,7 @@ def addTenantMember(request):
         else:
             tenant = tenant[0]
         tenantMember = TenantMember.objects(member_username=member_username)
+        tenantMember.__keyspace__= tenant.tenant_domain
         if tenantMember:
             raise HttpResponseBadRequest("Invalid details!!")
         member_password_hash = pbkdf2_sha256.hash(member_password)
