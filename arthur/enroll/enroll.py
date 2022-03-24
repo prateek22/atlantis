@@ -63,7 +63,7 @@ class Enrollment():
         else:
             raise HttpResponseBadRequest("Invalid details!!")
         node = EnrolledNode.objects(tenant_id=secret['tenant_id'], node_system_id=secret['node_system_id'])
-        if node.if_exists():
+        if node:
             self.node = node[0]
         if not pbkdf2_sha256.verify(enroll_secret, self.node.node_hash):
             return None
@@ -72,7 +72,7 @@ class Enrollment():
 
     def validate_node(self, address, node_id):
         node = EnrolledNode.objects(node_address=address, node_id=node_id)
-        if node.if_exists():
+        if node:
             self.node = node[0]
             return self.node
         else:
