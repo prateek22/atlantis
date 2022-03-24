@@ -2,6 +2,7 @@
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render
 from cassandra.cqlengine.management import create_keyspace_simple, sync_table
+from django import forms
 
 # App imports
 from ..models import EnrolledNode, Tenant, TenantMember, alerts, dist_query_result, live_query
@@ -17,6 +18,7 @@ import os
 def addTenantMember(request):
     if request.method == 'GET':
         form = TenantMemberForm()
+        form.tenant = forms.ChoiceField(choices=[(tenant.tenant_name, tenant.tenant_name) for tenant in Tenant.objects().all()])
         return render(request, 'enroll/administer/add_tenant_member.html', {'form': form})
     elif request.method == 'POST':
         form = TenantMemberForm(request.POST)
