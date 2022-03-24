@@ -60,6 +60,7 @@ def addTenant(request):
         sync_table(keyspaces=[tenant_domain], model=alerts)
         sync_table(keyspaces=[tenant_domain], model=live_query)
         sync_table(keyspaces=[tenant_domain], model=dist_query_result)
+        TenantMemberForm.__init__()
         os.system("../scripts/generate_new_cert.sh " + tenant_domain)
         os.system("echo '127.0.0.1   " + tenant_domain + ".edr.api' >> /etc/hosts")
         context = {"message": 'Tenant {} added successfully!!'.format(tenant_name)}
