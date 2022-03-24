@@ -1,6 +1,6 @@
 # Django imports
 from cassandra.cluster import Cluster
-from django.db import connections
+from django.db import connection, connections
 from django_cassandra_engine.connection import Cursor
 
 # App imports
@@ -32,6 +32,7 @@ def set_tenant_schema_for_request(request):
         schema = tenant_schema_from_request(request)
     except Exception:
         raise Exception("Invalid details!!")
+    print(connection.client)
     with connections['cassandra'].cursor() as cursor:
         cursor.execute("use "+schema+";")
     # cluster = Cluster()
