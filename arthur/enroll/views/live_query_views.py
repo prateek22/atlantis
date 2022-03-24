@@ -20,10 +20,9 @@ def distributed_read(request):
     json_data = json.loads(data)
     address = request.META.get('REMOTE_ADDR')
     node_id = json_data.get('node_key')
-    enroll_secret = json_data.get('enroll_secret')
 
     host = Enrollment(tenant_id=None, node_system_id=None)
-    node = host.validate_node(address, node_id, enroll_secret)
+    node = host.validate_node(address, node_id)
     if not node:
         return JsonResponse(FAILED_ENROLL_RESPONSE)
 
@@ -47,12 +46,10 @@ def distributed_write(request):
     else:
         queries = []
 
-
     node_id = json_data.get('node_key')
-    enroll_secret = json_data.get('enroll_secret')
 
     host = Enrollment(tenant_id=None, node_system_id=None)
-    node = host.validate_node(address, node_id, enroll_secret)
+    node = host.validate_node(address, node_id)
     if not node:
         return JsonResponse(FAILED_ENROLL_RESPONSE)
 

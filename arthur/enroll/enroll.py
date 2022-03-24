@@ -1,8 +1,14 @@
+# Django imports
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
 from django import forms
 from django.core.validators import RegexValidator
-from .models import EnrolledNode
+from django.http import HttpResponse, HttpResponseBadRequest
+
+# App imports
+from .models import EnrolledNode, Tenant
+
+#Miscellaneous imports
 import secrets, hashlib, base64, os, binascii, json
 from passlib.hash import pbkdf2_sha256
 
@@ -30,6 +36,12 @@ class Enrollment():
             print(type(encoded_secret))
             node_hash = pbkdf2_sha256.hash(encoded_secret_string)
             #print(host_hash.decode('ascii'))
+            tenant = Tenant.objects(tenant_id=self.tenant_id)
+            if tenant:
+                tenant = tenant[0]
+            else:
+                raise HttpResponseBadRequest("Invalid details!!")
+            EnrolledNode.__keyspace__= tenant.tenant_domain
             self.node = EnrolledNode(tenant_id=self.tenant_id, node_system_id=self.node_system_id, node_os=node_os, node_arch=node_arch, node_secret=encoded_secret_string, node_hash=node_hash)
             self.node.save()
             return encoded_secret_string
@@ -46,6 +58,11 @@ class Enrollment():
     def validate_enroll_secret(self, enroll_secret):
         decoded_secret = base64.b64decode(enroll_secret.encode())
         secret = json.loads(decoded_secret.decode())
+        tenant = Tenant.objects(tenant_id=self.tenant_id)
+        if tenant:
+            tenant = tenant[0]
+        else:
+            raise HttpResponseBadRequest("Invalid details!!")
         node = EnrolledNode.objects(tenant_id=secret['tenant_id'], node_system_id=secret['node_system_id'])
         if node:
             self.node = node[0]
@@ -54,8 +71,7 @@ class Enrollment():
         else:
             return self.node
 
-    def validate_node(self, address, node_id, enroll_secret):
-
+    def validate_node(self, address, node_id):
         node = EnrolledNode.objects(node_address=address, node_id=node_id)
         if node:
             self.node = node[0]

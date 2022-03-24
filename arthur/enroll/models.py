@@ -9,7 +9,8 @@ from django_cassandra_engine.models import DjangoCassandraModel
 class Tenant(Model):
     tenant_id = columns.UUID(primary_key=True, default=uuid.uuid4)
     tenant_name = columns.Text(required=True, index=True)
-    tenant_domain = columns.Text(required=True)
+    tenant_domain = columns.Text(required=True, index=True)
+    tenant_schema = columns.Text(required=True)
     #__type_name__ = 'Tenant'
 
 class TenantMember(Model):

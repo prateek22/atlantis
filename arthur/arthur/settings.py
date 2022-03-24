@@ -31,9 +31,9 @@ ALLOWED_HOSTS = [".edr.api"]
 # Application definition
 
 INSTALLED_APPS = [
-    'django_cassandra_engine',
+    'django_cassandra_engine', # For connecting with Cassandra instance; has to be the first entry
     'enroll.apps.EnrollConfig',
-    'django_extensions',
+    'django_extensions', # required for serving the SSL server
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,10 +41,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms', # For rendering forms
-    'sslserver',
+    'sslserver', # For SSL server
 ]
 
 MIDDLEWARE = [
+    'enroll.middlewares.TenantMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

@@ -30,12 +30,16 @@ def register(request):
             node_system_id = form.cleaned_data['system_id']
             os = form.cleaned_data['os']
             arch = form.cleaned_data['arch']
+        #Tenant.__keyspace__ = "db"
         tenant = Tenant.objects(tenant_id=tenant_id)
         if tenant:
             tenant = tenant[0]
         else:
-            raise HttpResponseBadRequest("Invalid details!!")
-        host_enroll = Enrollment(tenant_id=tenant_id, node_system_id=node_system_id)
+            return HttpResponseBadRequest("Invalid details!!")
+        try:
+            host_enroll = Enrollment(tenant_id=tenant_id, node_system_id=node_system_id)
+        except Exception:
+            return HttpResponseBadRequest("Invalid details!!")
         secret = host_enroll.generate_node(node_arch=arch, node_os=os)
         with open(tenant.tenant_name+'_'+node_system_id+'.secret', 'x') as f:
             f.write(secret)
@@ -97,10 +101,9 @@ def config(request):
         print(json_data)
         address = request.META.get('REMOTE_ADDR')
         node_id = json_data.get('node_key')
-        enroll_secret = json_data.get('enroll_secret')
 
         host = Enrollment(tenant_id=None, node_system_id=None)
-        node = host.validate_node(address, node_id, enroll_secret)
+        node = host.validate_node(address, node_id)
         if not node:
             return JsonResponse(FAILED_ENROLL_RESPONSE)
 
@@ -117,10 +120,9 @@ def logger(request):
     results = json_data.get('data')
     log_type = json_data.get('log_type')
     node_id = json_data.get('node_key')
-    enroll_secret = json_data.get('enroll_secret')
 
     host = Enrollment(tenant_id=None, node_system_id=None)
-    node = host.validate_node(address, node_id, enroll_secret)
+    node = host.validate_node(address, node_id)
     if not node:
         return JsonResponse(FAILED_ENROLL_RESPONSE)
 
