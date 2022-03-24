@@ -4,7 +4,7 @@ from django.db import connection, connections
 from django_cassandra_engine.connection import Cursor
 
 # App imports
-from .models import Tenant, TenantMember
+from .models import EnrolledNode, Tenant, TenantMember, alerts, dist_query_result, live_query
 
 def get_tenants_schema(hostname):
     if hostname == 'admin':
@@ -32,13 +32,9 @@ def set_tenant_schema_for_request(request):
         schema = tenant_schema_from_request(request)
     except Exception:
         raise Exception("Invalid details!!")
-    # with connection.cursor() as cursor:
-    #     cursor.execute("USE %s", [schema])
-    # with connections['cassandra'].cursor() as cursor:
-    #     cursor.execute("USE %s", [schema])
-    # cluster = Cluster()
-    # session = cluster.connect()
-    # print("Schema: "+schema)
-    # session.set_keyspace(schema)
     Tenant.__keyspace__ = "db"
     TenantMember.__keyspace__ = schema
+    EnrolledNode.__keyspace__ = schema
+    alerts.__keyspace__ = schema
+    live_query.__keyspace__ = schema
+    dist_query_result.__keyspace__ = schema

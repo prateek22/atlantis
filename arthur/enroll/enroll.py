@@ -41,7 +41,6 @@ class Enrollment():
                 tenant = tenant[0]
             else:
                 raise HttpResponseBadRequest("Invalid details!!")
-            EnrolledNode.__keyspace__= tenant.tenant_domain
             self.node = EnrolledNode(tenant_id=self.tenant_id, node_system_id=self.node_system_id, node_os=node_os, node_arch=node_arch, node_secret=encoded_secret_string, node_hash=node_hash)
             self.node.save()
             return encoded_secret_string
