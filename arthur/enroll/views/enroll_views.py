@@ -83,7 +83,7 @@ def enroll(request):
         node_key = host.update_node_address(address)
         response = ENROLL_RESPONSE
         response['node_key'] = node_key
-        print(dir(node_key))
+        print(node_key.to_python())
 
         return JsonResponse(response)
 
