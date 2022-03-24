@@ -2,7 +2,6 @@
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render
 from cassandra.cqlengine.management import create_keyspace_simple, sync_table
-from django import forms
 
 # App imports
 from ..models import EnrolledNode, Tenant, TenantMember, alerts, dist_query_result, live_query
@@ -38,7 +37,8 @@ def addTenantMember(request):
             raise HttpResponseBadRequest("Invalid details!!")
         member_password_hash = pbkdf2_sha256.hash(member_password)
         tenantMember = TenantMember(member_name=member_name, member_username=member_username, member_password=member_password_hash, tenant_id=tenant.tenant_id)
-        tenantMember.save().using(keyspace=tenant.tenant_domain)
+        tenantMember.__keyspace__= tenant.tenant_domain
+        tenantMember.save()
         context = {"message": 'Tenant member {} added successfully!!'.format(member_username)}
         return render(request, 'enroll/miscellaneous/success.html', context)
 
