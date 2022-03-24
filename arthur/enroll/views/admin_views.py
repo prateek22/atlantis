@@ -49,7 +49,7 @@ def addTenant(request):
             tenant_name = form.cleaned_data['tenant_name']
             tenant_domain = form.cleaned_data['tenant_domain']
         tenant = Tenant.objects(tenant_name=tenant_name)
-        if not tenant.exists():
+        if not tenant:
             raise HttpResponseBadRequest("Invalid details!!")
         tenant = Tenant(tenant_name=tenant_name, tenant_domain=tenant_domain)
         tenant.save()
