@@ -1,4 +1,5 @@
 from enum import unique
+from operator import index
 import uuid
 from cassandra.cqlengine import columns
 from cassandra.cqlengine.models import Model
@@ -7,7 +8,7 @@ from django_cassandra_engine.models import DjangoCassandraModel
 
 class Tenant(Model):
     tenant_id = columns.UUID(primary_key=True, default=uuid.uuid4)
-    tenant_name = columns.Text(required=True)
+    tenant_name = columns.Text(required=True, index=True)
     tenant_domain = columns.Text(required=True)
     #__type_name__ = 'Tenant'
 
