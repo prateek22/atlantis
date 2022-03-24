@@ -10,8 +10,8 @@ openssl x509 -req -extensions v3_req -days 3650 -sha256 -in certs/$1.csr -CA cer
 cat certs/$1.crt certs/$1.key.pem > certs/$1-ca-full.pem
 
 # move certificate to ca certs
-sudo cp certs/$1.crt /usr/share/ca-certificates/extra/
-sudo chmod -R 755 /usr/share/ca-certificates/extra/ 
-sudo chmod 644 /usr/share/ca-certificates/extra/$1.crt
+sudo cp certs/$1.crt /etc/pki/ca-trust/source/anchors/
+sudo chmod -R 755 /etc/pki/ca-trust/source/anchors/ 
+sudo chmod 644 /etc/pki/ca-trust/source/anchors/$1.crt
 #sudo dpkg-reconfigure ca-certificates
 sudo update-ca-trust #certificates
