@@ -32,5 +32,6 @@ def set_tenant_schema_for_request(request):
         raise Exception("Invalid details!!")
     cluster = Cluster()
     session = cluster.connect()
+    print("Schema: "+schema)
     session.set_keyspace(schema)
     Tenant.__keyspace__ = "db"
