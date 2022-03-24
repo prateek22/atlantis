@@ -4,7 +4,7 @@ from django import forms
 from django.core.validators import RegexValidator
 
 class EnrollForm(forms.Form):
-    tenant_id = forms.CharField(widget=forms.HiddenInput(), initial='123e4567-e89b-12d3-a456-426614174000')
+    tenant_id = forms.CharField(widget=forms.HiddenInput())
     system_id = forms.CharField(validators=[RegexValidator(r'[a-zA-Z]+', 'Enter a valid first name (only letters)')])
     os = forms.ChoiceField(choices=[('windows', 'Windows'), ('linux', 'Linux')])
     arch = forms.ChoiceField(choices=[('x86', 'x86'), ('x64', 'x64')])
