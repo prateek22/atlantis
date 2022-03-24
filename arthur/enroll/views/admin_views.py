@@ -19,7 +19,7 @@ def addTenantMember(request):
     if request.method == 'GET':
         form = TenantMemberForm()
         #form.helper.build_default_layout()
-        form.tenant.choices = [(tenant.tenant_name, tenant.tenant_name) for tenant in Tenant.objects().all()]
+        #form.tenant.choices = [(tenant.tenant_name, tenant.tenant_name) for tenant in Tenant.objects().all()]
         return render(request, 'enroll/administer/add_tenant_member.html', {'form': form})
     elif request.method == 'POST':
         form = TenantMemberForm(request.POST)
