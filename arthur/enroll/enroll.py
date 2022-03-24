@@ -57,7 +57,7 @@ class Enrollment():
     def validate_enroll_secret(self, enroll_secret):
         decoded_secret = base64.b64decode(enroll_secret.encode())
         secret = json.loads(decoded_secret.decode())
-        tenant = Tenant.objects(tenant_id=self.tenant_id)
+        tenant = Tenant.objects(tenant_id=secret['tenant_id'])
         if tenant:
             tenant = tenant[0]
         else:
