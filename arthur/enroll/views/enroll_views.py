@@ -24,6 +24,7 @@ def index(request):
 def register(request):
     if request.method == 'GET':
         form = EnrollForm()
+        Tenant.__keyspace__ = "db"
         tenant = Tenant.objects(tenant_domain=tenant_schema_from_request(request))
         if tenant:
             tenant = tenant[0]
