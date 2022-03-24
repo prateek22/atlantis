@@ -62,7 +62,7 @@ class Enrollment():
             tenant = tenant[0]
         else:
             raise HttpResponseBadRequest("Invalid details!!")
-        node = EnrolledNode.objects(tenant_id=secret['tenant_id'], node_system_id=secret['node_system_id'])
+        node = EnrolledNode.objects(node_system_id=secret['node_system_id'])
         if node:
             self.node = node[0]
         if not pbkdf2_sha256.verify(enroll_secret, self.node.node_hash):
