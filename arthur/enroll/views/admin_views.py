@@ -36,10 +36,10 @@ def addTenantMember(request):
         # if tenantMember:
         #     raise HttpResponseBadRequest("Invalid details!!")
         member_password_hash = pbkdf2_sha256.hash(member_password)
-        tenantMember = TenantMember(member_name=member_name, member_username=member_username, member_password=member_password_hash, tenant_id=tenant.tenant_id)
-        tenantMember.__keyspace__= tenant.tenant_domain
-        if tenantMember.objects(member_username=member_username):
+        TenantMember.__keyspace__= tenant.tenant_domain
+        if TenantMember.objects(member_username=member_username):
             raise HttpResponseBadRequest("Invalid details!!")
+        tenantMember = TenantMember(member_name=member_name, member_username=member_username, member_password=member_password_hash, tenant_id=tenant.tenant_id)
         tenantMember.save()
         context = {"message": 'Tenant member {} added successfully!!'.format(member_username)}
         return render(request, 'enroll/miscellaneous/success.html', context)
