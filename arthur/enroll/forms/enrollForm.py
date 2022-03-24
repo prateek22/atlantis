@@ -10,15 +10,12 @@ class EnrollForm(forms.Form):
     arch = forms.ChoiceField(choices=[('x86', 'x86'), ('x64', 'x64')])
 
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, tenant, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper
         self.helper.form_method = 'post'
-        #self.fields['tenant_id'] = forms.CharField(widget=forms.HiddenInput(), initial= self.args['tenant'].tenant_id)
-
-        print(self.args)
-        print(self.kwargs)
+        self.fields['tenant_id'] = forms.CharField(widget=forms.HiddenInput(), initial= tenant.tenant_id)
 
         self.helper.layout = Layout(
             'tenant_id',
