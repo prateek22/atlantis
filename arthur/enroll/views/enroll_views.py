@@ -11,7 +11,7 @@ from ..enroll import Enrollment
 from ..osqueryResponses import *
 from ..settings import *
 from ..alerts import *
-from ..utils import tenant_schema_from_request
+from ..utils import hostname_from_request
 
 #Miscellaneous imports
 import zipfile, json
@@ -24,8 +24,7 @@ def index(request):
 def register(request):
     if request.method == 'GET':
         form = EnrollForm()
-        Tenant.__keyspace__ = "db"
-        tenant = Tenant.objects(tenant_domain=tenant_schema_from_request(request))
+        tenant = Tenant.objects(tenant_domain=hostname_from_request(request))
         if tenant:
             tenant = tenant[0]
         else:
