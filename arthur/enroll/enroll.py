@@ -71,7 +71,7 @@ class Enrollment():
             return self.node
 
     def validate_node(self, address, node_id):
-        node = EnrolledNode.objects(node_address=address, node_id=node_id)
+        node = EnrolledNode.objects(node_address=address)
         if node:
             self.node = node[0]
             return self.node
