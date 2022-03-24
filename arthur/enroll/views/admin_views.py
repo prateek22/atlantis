@@ -29,7 +29,7 @@ def addTenantMember(request):
             member_password = form.cleaned_data['member_password']
             tenant_name = form.cleaned_data['tenant']
         tenant = Tenant.objects(tenant_name=tenant_name)
-        if tenant:
+        if not tenant:
             raise HttpResponseBadRequest("Invalid details!!")
         else:
             tenant = tenant[0]
