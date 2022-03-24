@@ -1,6 +1,7 @@
 # Django imports
 from django.http import HttpResponse, HttpResponseBadRequest, FileResponse, JsonResponse
 from django.shortcuts import render
+from django import forms
 from django.views.decorators.csrf import csrf_exempt
 
 # App imports
@@ -22,6 +23,12 @@ def index(request):
 def register(request):
     if request.method == 'GET':
         form = EnrollForm()
+        tenant = Tenant.objects(tenant_id=tenant_id)
+        if tenant:
+            tenant = tenant[0]
+        else:
+            return HttpResponseBadRequest("Invalid details!!")
+        form.fields['tenant'] = forms.CharField(widget=forms.HiddenInput(), initial= tenant.tenant_id)
         return render(request, 'enroll/enroll.html', {'form': form})
     elif request.method == 'POST':
         form = EnrollForm(request.POST)
