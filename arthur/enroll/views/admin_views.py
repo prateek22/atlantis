@@ -18,8 +18,6 @@ import os
 def addTenantMember(request):
     if request.method == 'GET':
         form = TenantMemberForm()
-        for tenant in Tenant.objects().all():
-            print(tenant)
         form.tenant.choices = [(tenant.tenant_name, tenant.tenant_name) for tenant in Tenant.objects().all()]
         return render(request, 'enroll/administer/add_tenant_member.html', {'form': form})
     elif request.method == 'POST':
