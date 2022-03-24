@@ -16,7 +16,7 @@ class TenantMember(Model):
     member_id = columns.UUID(primary_key=True, default=uuid.uuid4, partition_key=True)
     tenant_id = columns.UUID(required=True,partition_key=True) #columns.UserDefinedType(user_type=Tenant)
     member_name = columns.Text(required=True)
-    member_username = columns.Text(required=True)
+    member_username = columns.Text(required=True,index=True)
     member_password = columns.Text(required=True)
 
     class Meta:
