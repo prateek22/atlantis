@@ -13,13 +13,13 @@ class TenantListView(ListView):
     context_object_name = 'List of All Tenants'
     template_name = 'enroll/administer/tenants.html'
 
+    def get_queryset(self):
+        return Tenant.objects.all()
+
 class TenantMemberListView(ListView):
     model = TenantMember
     context_object_name = 'Active Tenant Members'
     template_name = 'enroll/administer/tenantMembers.html'
 
     def get_queryset(self):
-        print(self.args)
-        print(self.kwargs)
-        print(self.request)
         return TenantMember.objects.all()#filter(tenant_id=self.kwargs['tenant_id'])
