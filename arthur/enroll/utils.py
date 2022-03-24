@@ -33,10 +33,9 @@ def set_tenant_schema_for_request(request):
     except Exception:
         raise Exception("Invalid details!!")
     with connections['cassandra'].cursor() as cursor:
-        print(cursor)
-        print(dir(cursor))
-    cluster = Cluster()
-    session = cluster.connect()
-    print("Schema: "+schema)
-    session.set_keyspace(schema)
+        cursor.execute("use "+schema+";")
+    # cluster = Cluster()
+    # session = cluster.connect()
+    # print("Schema: "+schema)
+    # session.set_keyspace(schema)
     Tenant.__keyspace__ = "db"
