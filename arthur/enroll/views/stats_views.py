@@ -23,4 +23,4 @@ class TenantMemberListView(ListView):
     template_name = 'enroll/administer/tenantMembers.html'
 
     def get_queryset(self):
-        return TenantMember.objects.all().using(keyspace=tenant_schema_from_request(self.request)) #filter(tenant_id=self.kwargs['tenant_id'])
+        return TenantMember.objects.all() #filter(tenant_id=self.kwargs['tenant_id'])

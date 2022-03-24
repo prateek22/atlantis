@@ -4,7 +4,7 @@ from django.db import connection, connections
 from django_cassandra_engine.connection import Cursor
 
 # App imports
-from .models import Tenant
+from .models import Tenant, TenantMember
 
 def get_tenants_schema(hostname):
     if hostname == 'admin':
@@ -41,3 +41,4 @@ def set_tenant_schema_for_request(request):
     # print("Schema: "+schema)
     # session.set_keyspace(schema)
     Tenant.__keyspace__ = "db"
+    TenantMember.__keyspace__ = schema
