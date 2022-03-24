@@ -3,7 +3,6 @@
 EMPTY_RESPONSE = {}
 
 ENROLL_RESPONSE = {
-    "node_invalid": False
 }
 
 FAILED_ENROLL_RESPONSE = {
