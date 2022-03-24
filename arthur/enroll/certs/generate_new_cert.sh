@@ -6,7 +6,7 @@ set domain [lindex $argv 0];
 
 spawn ./enroll/certs/certs.sh $domain
 
-expect "Enter pass phrase for certs/ca.key.pem:"
+expect "Enter pass phrase for ./enroll/certs/ca.key.pem:"
 send -- "seceon\r"
 
 expect eof
