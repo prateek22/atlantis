@@ -62,7 +62,6 @@ ROOT_URLCONF = 'arthur.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'APP_DIRS': True,
         'DIRS': [
             BASE_DIR.__str__() + 'templates',
         ],
