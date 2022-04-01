@@ -19,7 +19,7 @@ urlpatterns = [
     path('tenantMemberList', TenantMemberListView.as_view(), name='tenantMemberList'),
     path('addTenant', views.addTenant, name='addTenant'),
     path('addTenantMember', views.addTenantMember, name='addTenantMember'),
-    path('login', views.LoginView.as_view(), name='login'),
+    path('login', views.LoginView.as_view(), name='loginUser'),
     path('logout', views.LogoutView.as_view(), name='logout'),
     path('registerUser', views.RegisterView.as_view(), name='registerUser'),
 ]
