@@ -62,18 +62,31 @@ ROOT_URLCONF = 'arthur.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
         'APP_DIRS': True,
+        'DIRS': [
+            str(BASE_DIR.path('templates')),
+        ],
         'OPTIONS': {
+            # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-debug
+            'debug': DEBUG,
+            # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-loaders
+            # https://docs.djangoproject.com/en/dev/ref/templates/api/#loader-types
+            'loaders': [
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+            ],
+            # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-context-processors
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
+                # Your stuff: custom template context processors go here
             ],
-            'libraries' : {
-                'staticfiles': 'django.templatetags.static', 
-            }
         },
     },
 ]
@@ -138,10 +151,25 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.0/howto/static-files/
+# STATIC FILE CONFIGURATION
+# ------------------------------------------------------------------------------
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#static-root
+STATIC_ROOT = str(BASE_DIR('staticfiles'))
 
-STATIC_URL = 'static/'
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
+STATIC_URL = '/static/'
+
+# See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
+STATICFILES_DIRS = (
+    str(BASE_DIR.path('static')),
+    'static',
+)
+
+# See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
