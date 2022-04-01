@@ -7,7 +7,7 @@ from django.views.generic import TemplateView, View
 from ..forms.tenantMemberForm import TenantMemberForm
 
 class LoginView(TemplateView, View):
-    template_name = 'users/login.html'
+    template_name = 'enroll/login.html'
 
     def get(self, request, *args, **kwargs):
         return self.render_to_response({})
@@ -40,7 +40,7 @@ class LogoutView(View):
 
 
 class RegisterView(TemplateView):
-    template_name = 'users/register.html'
+    template_name = 'enroll/register.html'
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated():
@@ -59,7 +59,7 @@ class RegisterView(TemplateView):
 
 
 class MembersView(LoginRequiredMixin, TemplateView, View):
-    template_name = 'users/members_only.html'
+    template_name = 'enroll/members_only.html'
 
     def get(self, request, *args, **kwargs):
         return self.render_to_response({})
