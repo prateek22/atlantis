@@ -5,7 +5,7 @@
     <link href="{% static 'css/users.css' %}" rel="stylesheet">
 {% endblock %}
 {% block content %}
-    <form class="form-signin" action="{% url 'loginUser' %}" method="POST">
+    <form class="form-signin" action="{% url 'edr:login' %}" method="POST">
         {% csrf_token %}
 
         <input type="hidden" id="id_next" name="next" value="{{ request.GET.next }}">
