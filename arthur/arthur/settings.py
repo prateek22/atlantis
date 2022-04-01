@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     'django_cassandra_engine', # For connecting with Cassandra instance; has to be the first entry
     'enroll.apps.EnrollConfig',
     'django_extensions', # required for serving the SSL server
+    'django.contrib.humanize',
+    'widget_tweaks',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
