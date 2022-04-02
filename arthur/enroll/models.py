@@ -62,7 +62,7 @@ class alerts(Model):
         
 class live_query(Model):
     query = columns.Text(max_length=250)
-    query_id = columns.UUID(primary_key=True, default=uuid.uuid4, partition_key=True)
+    tags = columns.UUID(primary_key=True, default=uuid.uuid4, partition_key=True)
     
     def __str__(self):
       return self.query_id
