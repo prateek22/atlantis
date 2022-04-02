@@ -42,18 +42,6 @@ def distributed_write(request):
     json_data = json.loads(data)
     address = request.META.get('REMOTE_ADDR')
     results = json_data.get('queries')
-    if results:
-        queries = results.keys()
-        print(queries)
-        print("\n")
-        print(results)
-        jsonstring = json.dumps(queries)
-        jsonfile = open("../results.json", "w")
-        jsonfile.write(jsonstring)
-        jsonfile.close()
-    
-    else:
-        queries = []
 
     node_id = json_data.get('node_key')
 
@@ -61,6 +49,12 @@ def distributed_write(request):
     node = host.validate_node(address, node_id)
     if not node:
         return JsonResponse(FAILED_ENROLL_RESPONSE)
+
+    if results:
+        jsonstring = json.dumps(results)
+        jsonfile = open("../results.json", "w")
+        jsonfile.write(jsonstring)
+        jsonfile.close()    
 
     #with open(LOG_OUTPUT_FILE, 'a') as f:
     #    for query in queries:
