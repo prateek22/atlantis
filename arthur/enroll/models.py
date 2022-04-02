@@ -1,5 +1,6 @@
 from enum import unique
 from operator import index
+from tkinter.tix import Tree
 import uuid
 from cassandra.cqlengine import columns
 from cassandra.cqlengine.models import Model
@@ -50,9 +51,9 @@ class EnrolledNode(Model):
 
 class alerts(Model):
 
-    src_ip = columns.Text(max_length=50)
+    src_ip = columns.Text(max_length=50, index=True)
     src_port = columns.Text(max_length=50)
-    dest_ip = columns.Text(max_length=50)
+    dest_ip = columns.Text(max_length=50, index=True)
     dest_port = columns.Text(max_length=50)
     uid = columns.UUID(primary_key=True, default=uuid.uuid4, partition_key=True)
 
@@ -65,7 +66,7 @@ class live_query(Model):
     tags = columns.UUID(primary_key=True, default=uuid.uuid4, partition_key=True)
     
     def __str__(self):
-      return self.query_id
+      return self.tags
       
 class dist_query_result(Model):
     result_query = columns.Text(max_length=250)
