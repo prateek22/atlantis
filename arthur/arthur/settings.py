@@ -45,7 +45,14 @@ INSTALLED_APPS = [
     'crispy_forms', # For rendering forms
     'sslserver', # For SSL server
     'rest_framework', # For REST API
+    'rest_framework.authtoken', # For REST API authentication
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
 
 MIDDLEWARE = [
     'enroll.middlewares.TenantMiddleware',
