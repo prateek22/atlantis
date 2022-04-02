@@ -28,7 +28,7 @@ def distributed_read(request):
         return JsonResponse(FAILED_ENROLL_RESPONSE)
 
     query = deepcopy(DIST_QUERY)
-    query = check_alerts(address, query)
+    #query = check_alerts(address, query)
 
     if not len(query['queries']):
         return JsonResponse(EMPTY_RESPONSE)
