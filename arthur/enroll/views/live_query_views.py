@@ -78,17 +78,18 @@ def distributed_write(request):
 @csrf_exempt
 def distributed_query(request):
   
-  if request.method == 'GET':
+    if request.method == 'GET':
         form = LiveQueryForm()
         return render(request, 'enroll/queries.html', {'form': form})  
-  elif request.method == 'POST':
+    elif request.method == 'POST':
         #raise HttpResponseBadRequest("Invalid details!!")
         form = LiveQueryForm(request.POST)
         if form.is_valid():
             results = live_query(query = form.cleaned_data['user_query'])
             #results.tags = form.cleaned_data['tags']
             #results.node_keys = form.cleaned_data['node_keys']
-            print(results.query)
+            print(results)
+            print("a")
             DIST_QUERY["queries"]["id1"] = results.query
             results.save()
         html = "<html><body>POST request successful.</body></html>"
