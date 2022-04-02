@@ -52,7 +52,7 @@ def distributed_write(request):
 
     if results:
         jsonstring = json.dumps(results)
-        jsonfile = open("../results.json", "w")
+        jsonfile = open("results.json", "w")
         jsonfile.write(jsonstring)
         jsonfile.close()    
 
@@ -95,7 +95,7 @@ def distributed_query(request):
         return HttpResponse(html)
 
 def distributed_results(request):
-    with open("/root/PrateekPro/atlantis/arthur/enroll/result.json") as file:
+    with open("./enroll/result.json") as file:
       data = json.load(file)
       return JsonResponse(data)
     #data = request.body.decode('utf-8')
