@@ -51,9 +51,9 @@ class EnrolledNode(Model):
 class alerts(Model):
 
     src_ip = columns.Text(max_length=50, index=True)
-    src_port = columns.Text(max_length=50)
+    src_port = columns.Text(max_length=50, index=True)
     dest_ip = columns.Text(max_length=50, index=True)
-    dest_port = columns.Text(max_length=50)
+    dest_port = columns.Text(max_length=50, index=True)
     uid = columns.UUID(primary_key=True, default=uuid.uuid4, partition_key=True)
 
 
