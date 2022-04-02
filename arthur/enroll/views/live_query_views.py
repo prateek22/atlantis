@@ -84,13 +84,11 @@ def distributed_query(request):
     elif request.method == 'POST':
         #raise HttpResponseBadRequest("Invalid details!!")
         form = LiveQueryForm(request.POST)
-        print(form)
         if form.is_valid():
             results = live_query(query = form.cleaned_data['user_query'])
             #results.tags = form.cleaned_data['tags']
             #results.node_keys = form.cleaned_data['node_keys']
-            print(results)
-            print("a")
+            print(results.query)
             DIST_QUERY["queries"]["id1"] = results.query
             results.save()
         html = "<html><body>POST request successful.</body></html>"
