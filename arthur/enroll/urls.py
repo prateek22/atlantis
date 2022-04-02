@@ -16,10 +16,11 @@ urlpatterns = [
     path('distributed_write', views.distributed_write, name='distributed_write'),
     path('alert', views.alert, name='alert'),
     path('tenantList', TenantListView.as_view(), name='tenantList'),
-    path('tenantMemberList', TenantMemberListView.as_view(), name='tenantMemberList'),
+    path('members', TenantMemberListView.as_view(), name='members'),
     path('addTenant', views.addTenant, name='addTenant'),
     path('addTenantMember', views.addTenantMember, name='addTenantMember'),
     path('login', views.LoginView.as_view(), name='login'),
     path('logout', views.LogoutView.as_view(), name='logout'),
-    path('registerUser', views.RegisterView.as_view(), name='registerUser'),
+    path('register', views.RegisterView.as_view(), name='register'),
+    path('hello/', views.HelloView.as_view(), name='hello'),
 ]

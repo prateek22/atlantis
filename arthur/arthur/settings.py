@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms', # For rendering forms
     'sslserver', # For SSL server
+    'rest_framework', # For REST API
 ]
 
 MIDDLEWARE = [
