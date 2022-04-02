@@ -80,7 +80,7 @@ def distributed_query(request):
   
   if request.method == 'GET':
         form = LiveQueryForm()
-        return render(request, 'enroll/results.html', {'form': form})  
+        return render(request, 'enroll/queries.html', {'form': form})  
   elif request.method == 'POST':
         #raise HttpResponseBadRequest("Invalid details!!")
         form = LiveQueryForm(request.POST)
