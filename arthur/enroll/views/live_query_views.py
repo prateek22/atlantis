@@ -95,7 +95,7 @@ def distributed_query(request):
         return HttpResponse(html)
 
 def distributed_results(request):
-    with open("./enroll/result.json") as file:
+    with open("/root/Documents/atlantis/arthur/enroll/result.json") as file:
       data = json.load(file)
       return JsonResponse(data)
     #data = request.body.decode('utf-8')
