@@ -1,6 +1,5 @@
 from enum import unique
 from operator import index
-from tkinter.tix import Tree
 import uuid
 from cassandra.cqlengine import columns
 from cassandra.cqlengine.models import Model
