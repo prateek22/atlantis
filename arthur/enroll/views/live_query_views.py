@@ -85,8 +85,7 @@ def distributed_query(request):
         #raise HttpResponseBadRequest("Invalid details!!")
         form = LiveQueryForm(request.POST)
         if form.is_valid():
-            results = live_query()
-            results.query = form.cleaned_data['user_query']
+            results = live_query(query = form.cleaned_data['user_query'])
             #results.tags = form.cleaned_data['tags']
             #results.node_keys = form.cleaned_data['node_keys']
             print(results.query)
