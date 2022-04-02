@@ -9,6 +9,7 @@ from ..osqueryResponses import *
 from ..settings import *
 from ..alerts import *
 from ..forms.liveQueryForm import LiveQueryForm
+from ..models import live_query
 
 #Miscellaneous imports
 import json
@@ -52,7 +53,7 @@ def distributed_write(request):
 
     if results:
         jsonstring = json.dumps(results)
-        jsonfile = open("results.json", "w")
+        jsonfile = open("result.json", "w")
         jsonfile.write(jsonstring)
         jsonfile.close()    
 
@@ -88,8 +89,8 @@ def distributed_query(request):
             results.query = form.cleaned_data['user_query']
             #results.tags = form.cleaned_data['tags']
             #results.node_keys = form.cleaned_data['node_keys']
-            print(result.query)
-            DIST_QUERY[queries][id1] = result.query
+            print(results.query)
+            DIST_QUERY["queries"]["id1"] = results.query
             results.save()
         html = "<html><body>POST request successful.</body></html>"
         return HttpResponse(html)
