@@ -44,6 +44,9 @@ def distributed_write(request):
     results = json_data.get('queries')
     if results:
         queries = results.keys()
+        print(queries)
+        print("\n")
+        print(results)
         jsonstring = json.dumps(queries)
         jsonfile = open("../results.json", "w")
         jsonfile.write(jsonstring)
