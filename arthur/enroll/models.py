@@ -73,3 +73,10 @@ class dist_query_result(Model):
     
     def __str__(self):
       return self.node_keys
+
+class logs(Model):
+    log_id = columns.UUID(primary_key=True, default=uuid.uuid4, partition_key=True)
+    node_id = columns.UUID(partition_key=True)
+    log_type = columns.Text(max_length=50, index=True)
+    log_data = columns.Text()
+    log_ts = columns.DateTime(index=True)

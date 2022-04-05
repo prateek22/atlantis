@@ -22,7 +22,7 @@ TEST_SCHED_QUERY = {
         "test_query": {
             "query": "select * from processes;",
             "interval": 10,
-            "snapshot": "true"
+            # "snapshot": "true"
         }
     }
 }

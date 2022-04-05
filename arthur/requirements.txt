@@ -1,0 +1,11 @@
+django==2.2
+djangorestframework==3.9.2
+django-extensions
+django-sslserver
+Werkzeug
+pyOpenSSL
+django-crispy-forms
+django-cassandra-engine
+passlib
+djangorestframework
+PyJWT==v1.7.1
