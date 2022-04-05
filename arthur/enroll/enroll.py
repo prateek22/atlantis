@@ -61,7 +61,7 @@ class Enrollment():
         if tenant:
             tenant = tenant[0]
         else:
-            raise HttpResponseBadRequest("Invalid details!!")
+            raise Exception("Invalid details!!")
         node = EnrolledNode.objects(node_system_id=secret['node_system_id'])
         if node:
             self.node = node[0]

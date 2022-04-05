@@ -92,8 +92,11 @@ def enroll(request):
         enroll_secret = json_data.get('enroll_secret')
         address = request.META.get('REMOTE_ADDR')
         host = Enrollment(tenant_id=None, node_system_id=None)
-        node = host.validate_enroll_secret(enroll_secret)
-        if not enroll_secret or not node:
+        try:
+            node = host.validate_enroll_secret(enroll_secret)
+            if not enroll_secret or not node:
+                return JsonResponse(FAILED_ENROLL_RESPONSE)
+        except Exception:
             return JsonResponse(FAILED_ENROLL_RESPONSE)
         
         node_key = host.update_node_address(address)
