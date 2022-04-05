@@ -144,10 +144,8 @@ def logger(request):
     if results and log_type == 'result':
         with open(LOG_OUTPUT_FILE, 'a') as f:
             for result in results:
-                logs = result['snapshot']
-                for log in logs:
-                    log['address'] = address
-                    f.write(json.dumps(log) + '\n')
+                result['address'] = address
+                f.write(json.dumps(result) + '\n')
 
     return JsonResponse(EMPTY_RESPONSE)
 
