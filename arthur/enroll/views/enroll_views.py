@@ -4,6 +4,8 @@ from django.shortcuts import render
 from django import forms
 from django.views.decorators.csrf import csrf_exempt
 
+from arthur.enroll.views.kafka_views import kfk
+
 # App imports
 from ..models import Tenant, alerts
 from ..forms.enrollForm import EnrollForm
@@ -142,6 +144,7 @@ def logger(request):
         return JsonResponse(FAILED_ENROLL_RESPONSE)
 
     if results and log_type == 'result':
+        kfk(results)
         with open(LOG_OUTPUT_FILE, 'a') as f:
             for result in results:
                 result['address'] = address
