@@ -7,6 +7,5 @@ pyOpenSSL
 django-crispy-forms
 django-cassandra-engine
 passlib
-djangorestframework
 PyJWT==v1.7.1
 kafka-python
