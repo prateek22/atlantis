@@ -21,7 +21,7 @@ class Enrollment():
         self.tenant_id = tenant_id
         self.node_system_id = node_system_id
         if tenant_id != None and node_system_id != None:
-            self.node = EnrolledNode.objects(node_system_id=self.node_system_id)
+            self.node = EnrolledNode.objects(node_system_id=self.node_system_id, tenant_id=self.tenant_id)
 
     def generate_node(self, node_os, node_arch):
         if self.node:
@@ -40,7 +40,7 @@ class Enrollment():
             if tenant:
                 tenant = tenant[0]
             else:
-                raise HttpResponseBadRequest("Invalid details!!")
+                return None
             self.node = EnrolledNode(tenant_id=self.tenant_id, node_system_id=self.node_system_id, node_os=node_os, node_arch=node_arch, node_secret=encoded_secret_string, node_hash=node_hash)
             self.node.save()
             return encoded_secret_string

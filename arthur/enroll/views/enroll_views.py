@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django import forms
 from django.views.decorators.csrf import csrf_exempt
 
-from arthur.enroll.views.kafka_views import kfk
+from .kafka_views import kfk
 
 # App imports
 from ..models import Tenant, alerts
