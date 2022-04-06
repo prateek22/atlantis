@@ -7,11 +7,15 @@ from django.views.generic import ListView
 from django.shortcuts import get_object_or_404
 
 from ..models import Tenant, TenantMember
+from ..utils import tenant_schema_from_request
 
 class TenantListView(ListView):
     model = Tenant
     context_object_name = 'List of All Tenants'
     template_name = 'enroll/administer/tenants.html'
+
+    def get_queryset(self):
+        return Tenant.objects.all()
 
 class TenantMemberListView(ListView):
     model = TenantMember
@@ -19,4 +23,4 @@ class TenantMemberListView(ListView):
     template_name = 'enroll/administer/tenantMembers.html'
 
     def get_queryset(self):
-        return TenantMember.objects.filter(tenant_id=self.kwargs['tenant_id'])
+        return TenantMember.objects.all() #filter(tenant_id=self.kwargs['tenant_id'])

@@ -3,6 +3,7 @@
 from .models import alerts
 from .osqueryResponses import *
 from .settings import *
+import elasticsearch, time
 
 def check_alerts(address, alert_query):
 
@@ -23,8 +24,6 @@ def check_alerts(address, alert_query):
 
 
 def update_elastic(direction, uid, results):
-
-    import elasticsearch, time
 
     es = elasticsearch.Elasticsearch(ES_CONN_STRING)
     body = {"doc":{}}

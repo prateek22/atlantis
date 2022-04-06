@@ -4,9 +4,9 @@ set timeout -1
 
 set domain [lindex $argv 0];
 
-spawn ./certs.sh $domain
+spawn ./enroll/certs/certs.sh $domain
 
-expect "Enter pass phrase for certs/ca.key.pem:"
-send -- "$domain\r"
+expect "Enter pass phrase for ./enroll/certs/ca.key.pem:"
+send -- "seceon\r"
 
 expect eof

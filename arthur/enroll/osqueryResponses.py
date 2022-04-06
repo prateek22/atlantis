@@ -3,7 +3,6 @@
 EMPTY_RESPONSE = {}
 
 ENROLL_RESPONSE = {
-    "node_invalid": False
 }
 
 FAILED_ENROLL_RESPONSE = {
@@ -23,7 +22,7 @@ TEST_SCHED_QUERY = {
         "test_query": {
             "query": "select * from processes;",
             "interval": 10,
-            "snapshot": "true"
+            # "snapshot": "true"
         }
     }
 }

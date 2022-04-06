@@ -17,6 +17,7 @@ class TenantMemberForm(forms.Form):
 
         self.helper = FormHelper
         self.helper.form_method = 'post'
+        self.fields['tenant'] = forms.ChoiceField(choices=[(tenant.tenant_name, tenant.tenant_name) for tenant in Tenant.objects().all()])
 
         self.helper.layout = Layout(
             'member_name',

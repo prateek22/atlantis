@@ -1,6 +1,10 @@
 # Django imports
+<<<<<<< HEAD
 from django.http import HttpResponse, HttpResponseBadRequest, FileResponse, JsonResponse
 from django.http import JsonResponse
+=======
+from django.http import HttpResponse,JsonResponse
+>>>>>>> 53ba1c0f66bfa30c397c1f6f719ddb5b87c13a52
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
@@ -10,7 +14,12 @@ from ..osqueryResponses import *
 from ..forms.liveQueryForm import LiveQueryForm
 from ..settings import *
 from ..alerts import *
+<<<<<<< HEAD
 from enroll.models import *
+=======
+from ..forms.liveQueryForm import LiveQueryForm
+from ..models import live_query
+>>>>>>> 53ba1c0f66bfa30c397c1f6f719ddb5b87c13a52
 
 #Miscellaneous imports
 import json
@@ -24,8 +33,8 @@ def distributed_read(request):
     json_data = json.loads(data)
     address = request.META.get('REMOTE_ADDR')
     node_id = json_data.get('node_key')
-    enroll_secret = json_data.get('enroll_secret')
 
+<<<<<<< HEAD
     #host = Enrollment()
     #node = host.validate_node(address, node_id, enroll_secret)
     #if not node:
@@ -33,8 +42,15 @@ def distributed_read(request):
         
     #exec_query = live_query.objects(query=query)
     #exec_query = DIST_QUERY[queries][id1]
+=======
+    host = Enrollment(tenant_id=None, node_system_id=None)
+    node = host.validate_node(address, node_id)
+    if not node:
+        return JsonResponse(FAILED_ENROLL_RESPONSE)
+
+>>>>>>> 53ba1c0f66bfa30c397c1f6f719ddb5b87c13a52
     query = deepcopy(DIST_QUERY)
-    query = check_alerts(address, query)
+    #query = check_alerts(address, query)
 
     if not len(query['queries']):
         return JsonResponse(EMPTY_RESPONSE)
@@ -48,6 +64,7 @@ def distributed_write(request):
     json_data = json.loads(data)
     address = request.META.get('REMOTE_ADDR')
     results = json_data.get('queries')
+<<<<<<< HEAD
     if results:
         queries = results.keys()
         jsonstring = json.dumps(queries)
@@ -58,10 +75,12 @@ def distributed_write(request):
     else:
         queries = []
 
+=======
+>>>>>>> 53ba1c0f66bfa30c397c1f6f719ddb5b87c13a52
 
     node_id = json_data.get('node_key')
-    enroll_secret = json_data.get('enroll_secret')
 
+<<<<<<< HEAD
     #host = Enrollment()
     #node = host.validate_node(address, node_id, enroll_secret)
     #if not node:
@@ -155,6 +174,58 @@ def distributed_query(request):
 @csrf_exempt
 def distributed_results(request):
     with open("/root/PrateekPro/atlantis/arthur/enroll/result.json") as file:
+=======
+    host = Enrollment(tenant_id=None, node_system_id=None)
+    node = host.validate_node(address, node_id)
+    if not node:
+        return JsonResponse(FAILED_ENROLL_RESPONSE)
+
+    if results:
+        jsonstring = json.dumps(results)
+        jsonfile = open("result.json", "w")
+        jsonfile.write(jsonstring)
+        jsonfile.close()    
+
+    #with open(LOG_OUTPUT_FILE, 'a') as f:
+    #    for query in queries:
+    #        if results[query] and len(results[query][0]):
+
+    #            result_type = query.split('|')[0]
+    #            direction = query.split('|')[1]
+    #            uid = query.split('|')[2]
+
+    #           if result_type == 'alert':
+    #                print(results[query][0])
+    #                update_elastic(direction, uid, results[query][0])
+    #            else:
+    #                for result in results[query]:
+    #                    result['address'] = address
+    #                    f.write(json.dumps(result) + '\n')
+
+    return JsonResponse(EMPTY_RESPONSE)
+
+@csrf_exempt
+def distributed_query(request):
+  
+    if request.method == 'GET':
+        form = LiveQueryForm()
+        return render(request, 'enroll/queries.html', {'form': form})  
+    elif request.method == 'POST':
+        #raise HttpResponseBadRequest("Invalid details!!")
+        form = LiveQueryForm(request.POST)
+        if form.is_valid():
+            results = live_query(query = form.cleaned_data['user_query'])
+            #results.tags = form.cleaned_data['tags']
+            #results.node_keys = form.cleaned_data['node_keys']
+            print(results.query)
+            DIST_QUERY["queries"]["id1"] = results.query
+            results.save()
+        html = "<html><body>POST request successful.</body></html>"
+        return HttpResponse(html)
+
+def distributed_results(request):
+    with open("/root/Documents/atlantis/arthur/result.json") as file:
+>>>>>>> 53ba1c0f66bfa30c397c1f6f719ddb5b87c13a52
       data = json.load(file)
       return JsonResponse(data)
     #data = request.body.decode('utf-8')
@@ -169,4 +240,8 @@ def distributed_results(request):
     #live_query = live_query(query=query, tags=tags)
     #live_query.save()
     
+<<<<<<< HEAD
     return JsonResponse(EMPTY_RESPONSE)
+=======
+    return JsonResponse(EMPTY_RESPONSE)
+>>>>>>> 53ba1c0f66bfa30c397c1f6f719ddb5b87c13a52

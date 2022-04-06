@@ -3,6 +3,7 @@
 # docker run -d     --name my-cassandra     -p 9042:9042     -v ~/apps/cassandra:/var/lib/cassandra     -e CASSANDRA_CLUSTER_NAME=citizix     cassandra:4.0
 # docker exec -it my-cassandra /bin/bash
 # cqlsh -u cassandra -p cassandra
+# CREATE KEYSPACE db WITH REPLICATION = {'class' : 'SimpleStrategy','replication_factor' : 1};
 ```
 
 # Running the django project
@@ -21,4 +22,13 @@
 # sudo yum-config-manager --add-repo https://pkg.osquery.io/rpm/osquery-s3-rpm.repo
 # sudo yum-config-manager --enable osquery-s3-rpm-repo
 # sudo yum install osquery
+```
+
+# Create keyspace on Cassandra
+```
+CREATE KEYSPACE db
+  WITH REPLICATION = { 
+   'class' : 'SimpleStrategy', 
+   'replication_factor' : 1 
+  };
 ```
