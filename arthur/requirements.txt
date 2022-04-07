@@ -9,3 +9,4 @@ django-cassandra-engine
 passlib
 PyJWT==v1.7.1
 kafka-python
+djangorestframework-simplejwt
