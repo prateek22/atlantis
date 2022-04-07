@@ -24,7 +24,7 @@ from cassandra.cqlengine.models import Model
 
 class TenantMemberManager(BaseUserManager):
     # https://thinkster.io/tutorials/django-json-api/authentication
-    def create_user(self, username, email, tenant_name, password=None):
+    def create_user(self, username, email, tenant_id, password=None):
         """Create and return a `User` with an email, username and password."""
         if username is None:
             raise TypeError('Users must have a username.')
@@ -35,13 +35,7 @@ class TenantMemberManager(BaseUserManager):
         if password is None:
             raise TypeError('Users must have a password.')
 
-        if tenant_name is None:
-            raise TypeError('Users must have a tenant.')
-
-        tenant = Tenant.objects(tenant_name = tenant_name)
-        if tenant:
-            tenant_id = tenant[0].tenant_id
-        else:
+        if tenant_id is None:
             raise TypeError('Users must have a tenant.')
 
         user = self.model(username=username, email=self.normalize_email(email), tenant_id=tenant_id)
@@ -50,14 +44,14 @@ class TenantMemberManager(BaseUserManager):
 
         return user
 
-    def create_superuser(self, username, email, tenant_name, password):
+    def create_superuser(self, username, email, tenant_id, password):
         """
         Create and return a `User` with superuser (admin) permissions.
         """
         if password is None:
             raise TypeError('Superusers must have a password.')
 
-        user = self.create_user(username, email, tenant_name, password)
+        user = self.create_user(username, email, tenant_id, password)
         user.is_superuser = True
         user.is_staff = True
         user.save()
