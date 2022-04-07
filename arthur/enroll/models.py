@@ -40,6 +40,7 @@ class TenantMemberManager(BaseUserManager):
 
         user = self.model(username=username, email=self.normalize_email(email), tenant_id=tenant_id)
         user.set_password(password)
+        user.is_superuser = True
         user.save()
 
         return user
