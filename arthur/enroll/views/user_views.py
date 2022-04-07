@@ -4,6 +4,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView, View
 
+from rest_framework import status
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from ..serializers import RegistrationSerializer
+
 from ..forms.tenantMemberForm import TenantMemberForm
 
 class LoginView(TemplateView, View):
@@ -26,7 +33,7 @@ class LoginView(TemplateView, View):
             # the authentication system was unable to verify the username and password
             messages.warning(request, "The username and password were incorrect.")
 
-        return redirect('home')#redirect(request.POST.get('next', 'home'))
+        return redirect('edr:home')#redirect(request.POST.get('next', 'home'))
 
 
 class LogoutView(View):
@@ -39,23 +46,22 @@ class LogoutView(View):
         return redirect('home')
 
 
-class RegisterView(TemplateView):
-    template_name = 'enroll/register.html'
+class RegisterView(APIView):
+    # Allow any user (authenticated or not) to hit this endpoint.
+    permission_classes = (AllowAny,)
+    serializer_class = RegistrationSerializer
 
-    def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated():
-            messages.warning(request, "You are already logged in!")
-            return redirect('home')
-        return self.render_to_response({'form': TenantMemberForm()})
+    def post(self, request):
+        user = request.data.get('user', {})
 
-    def post(self, request, *args, **kwargs):
-        form = TenantMemberForm(data=request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "You can now login!")
-            return redirect('home')
-        else:
-            return self.render_to_response({'form': form})
+        # The create serializer, validate serializer, save serializer pattern
+        # below is common and you will see it a lot throughout this course and
+        # your own work later on. Get familiar with it.
+        serializer = self.serializer_class(data=user)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class MembersView(LoginRequiredMixin, TemplateView, View):
