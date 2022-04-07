@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView, View
+from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework import status
 from rest_framework.permissions import AllowAny
@@ -45,12 +46,12 @@ class LogoutView(View):
         messages.success(request, "You are now logged out!")
         return redirect('home')
 
-
+@csrf_exempt
 class RegisterView(APIView):
     # Allow any user (authenticated or not) to hit this endpoint.
     permission_classes = (AllowAny,)
     serializer_class = RegistrationSerializer
-
+    
     def post(self, request):
         user = request.data.get('user', {})
 
