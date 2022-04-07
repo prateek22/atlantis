@@ -82,7 +82,7 @@ class TenantMember(AbstractBaseUser, PermissionsMixin):
 
         This string is used when a `User` is printed in the console.
         """
-        return self.member_email
+        return self.email
 
     @property
     def token(self):
@@ -101,7 +101,7 @@ class TenantMember(AbstractBaseUser, PermissionsMixin):
         Typically this would be the user's first and last name. Since we do
         not store the user's real name, we return their username instead.
         """
-        return self.member_name
+        return self.username
 
     def get_short_name(self):
         """
@@ -109,7 +109,7 @@ class TenantMember(AbstractBaseUser, PermissionsMixin):
         Typically, this would be the user's first name. Since we do not store
         the user's real name, we return their username instead.
         """
-        return self.member_name
+        return self.username
 
     def _generate_jwt_token(self):
         """
