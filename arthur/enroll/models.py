@@ -75,7 +75,7 @@ class TenantMember(AbstractBaseUser, PermissionsMixin):
     objects = TenantMemberManager()
 
     class Meta:
-        unique_together = (('member_id', 'tenant_id'),)
+        unique_together = (('id', 'tenant_id'),)
 
     def __str__(self):
         """
