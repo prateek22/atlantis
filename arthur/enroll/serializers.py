@@ -35,7 +35,7 @@ class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=255, read_only=True)
     password = serializers.CharField(max_length=128, write_only=True)
     token = serializers.CharField(max_length=255, read_only=True)
-    tenant_id = serializers.UUIDField(max_length=36, read_only=True)
+    tenant_id = serializers.UUIDField(read_only=True)
 
     def validate(self, data):
         # The `validate` method is where we make sure that the current
