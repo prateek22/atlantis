@@ -4,15 +4,17 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView, View
 from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponseBadRequest
 
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..serializers import RegistrationSerializer
-
-from ..forms.tenantMemberForm import TenantMemberForm
+from ..serializers import RegistrationSerializer, LoginSerializer
+from ..renderers import TenantMemberJSONRenderer
+from ..models import Tenant
+from ..utils import hostname_from_request
 
 class LoginView(TemplateView, View):
     template_name = 'enroll/login.html'
@@ -20,21 +22,28 @@ class LoginView(TemplateView, View):
     def get(self, request, *args, **kwargs):
         return self.render_to_response({})
 
-    def post(self, request, *args, **kwargs):
-        user = authenticate(username=request.POST.get('username'),
-                            password=request.POST.get('password'))
-        if user is not None:
-            # the password verified for the user
-            if user.is_active:
-                login(request, user)
-                messages.success(request, "You are now logged in!")
-            else:
-                messages.warning(request, "The password is valid, but the account has been disabled!")
-        else:
-            # the authentication system was unable to verify the username and password
-            messages.warning(request, "The username and password were incorrect.")
+class LoginView(APIView):
+    permission_classes = (AllowAny,)
+    renderer_classes = (TenantMemberJSONRenderer,)
+    serializer_class = LoginSerializer
 
-        return redirect('edr:home')#redirect(request.POST.get('next', 'home'))
+    def post(self, request):
+        user = request.data.get('user', {})
+
+        # Notice here that we do not call `serializer.save()` like we did for
+        # the registration endpoint. This is because we don't  have
+        # anything to save. Instead, the `validate` method on our serializer
+        # handles everything we need.
+        tenant = Tenant.objects(tenant_domain=hostname_from_request(request))
+        if tenant:
+            tenant = tenant[0]
+        else:
+            return HttpResponseBadRequest("{'user':{'message':'Invalid details!!'}}")
+        user['tenant_id'] = tenant.tenant_id
+        serializer = self.serializer_class(data=user)
+        serializer.is_valid(raise_exception=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class LogoutView(View):
@@ -49,9 +58,9 @@ class LogoutView(View):
 class RegisterView(APIView):
     # Allow any user (authenticated or not) to hit this endpoint.
     permission_classes = (AllowAny,)
+    renderer_classes = (TenantMemberJSONRenderer,)
     serializer_class = RegistrationSerializer
 
-    @csrf_exempt
     def post(self, request):
         user = request.data.get('user', {})
 
