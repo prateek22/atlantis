@@ -59,7 +59,7 @@ class TenantMemberManager(BaseUserManager):
         return user
 
 class TenantMember(AbstractBaseUser, PermissionsMixin):
-    member_id = models.UUIDField(primary_key=True)
+    member_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     tenant_id = models.UUIDField() #columns.UserDefinedType(user_type=Tenant)
     username = models.TextField(db_index=True, max_length=255, unique=True)
     email = models.TextField(db_index=True, unique=True)
