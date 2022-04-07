@@ -14,7 +14,7 @@ from ..enroll import Enrollment
 import json, zipfile
 
 class HelloView(APIView):
-    permission_classes = (IsAuthenticated,)             # <-- And here
+    #permission_classes = (IsAuthenticated,)             # <-- And here
 
     def get(self, request):
         content = {'message': 'Hello, World!'}

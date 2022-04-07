@@ -16,11 +16,11 @@ from ..renderers import TenantMemberJSONRenderer
 from ..models import Tenant
 from ..utils import hostname_from_request
 
-class LoginView(TemplateView, View):
-    template_name = 'enroll/login.html'
+# class LoginView(TemplateView, View):
+#     template_name = 'enroll/login.html'
 
-    def get(self, request, *args, **kwargs):
-        return self.render_to_response({})
+#     def get(self, request, *args, **kwargs):
+#         return self.render_to_response({})
 
 class LoginView(APIView):
     permission_classes = (AllowAny,)
