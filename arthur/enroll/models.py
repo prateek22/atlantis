@@ -77,10 +77,6 @@ class TenantMember(AbstractBaseUser, PermissionsMixin):
 
     objects = TenantMemberManager()
 
-    class _meta:
-        app_label = 'enroll'
-        model_name = 'TenantMember'
-
     class Meta:
         unique_together = (('member_id', 'tenant_id'),)
 
