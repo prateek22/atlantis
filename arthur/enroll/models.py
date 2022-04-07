@@ -82,7 +82,6 @@ class TenantMember(AbstractBaseUser, PermissionsMixin):
         model_name = 'TenantMember'
 
     class Meta:
-        get_pk_field = 'member_id'
         unique_together = (('member_id', 'tenant_id'),)
 
     def __str__(self):
