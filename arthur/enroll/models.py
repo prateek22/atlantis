@@ -4,9 +4,11 @@ import jwt
 from datetime import datetime, timedelta
 
 from django.conf import settings
+from django.utils import timezone
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin
 )
+from django.contrib.auth.management.commands import createsuperuser
 from django.db import models #: Instead of model data types, we will be using columns module to specify the datatypes
 
 
@@ -63,17 +65,17 @@ class TenantMemberManager(BaseUserManager):
         return user
 
 class TenantMember(AbstractBaseUser, PermissionsMixin):
-    member_id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    member_id = models.UUIDField(primary_key=True)
     tenant_id = models.UUIDField() #columns.UserDefinedType(user_type=Tenant)
     username = models.TextField(db_index=True, max_length=255, unique=True)
-    email = models.TextField(db_index=True, unique=True)
+    email = models.TextField(db_index=True, unique=True, default='a@tenant.com')
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    REQUIRED_FIELDS = ['username', 'tenant_id']
 
     objects = TenantMemberManager()
 
