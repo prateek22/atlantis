@@ -46,12 +46,12 @@ class LogoutView(View):
         messages.success(request, "You are now logged out!")
         return redirect('home')
 
-@csrf_exempt
 class RegisterView(APIView):
     # Allow any user (authenticated or not) to hit this endpoint.
     permission_classes = (AllowAny,)
     serializer_class = RegistrationSerializer
-    
+
+    @csrf_exempt
     def post(self, request):
         user = request.data.get('user', {})
 
