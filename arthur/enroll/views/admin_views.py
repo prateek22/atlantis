@@ -27,7 +27,7 @@ def addTenantMember(request):
         form = TenantMemberForm(request.POST)
         if form.is_valid():
             member_name = form.cleaned_data['member_name']
-            member_username = form.cleaned_data['member_email']
+            member_email = form.cleaned_data['member_email']
             member_password = form.cleaned_data['member_password']
             tenant_name = form.cleaned_data['tenant']
         tenant = Tenant.objects(tenant_name=tenant_name)
@@ -39,12 +39,12 @@ def addTenantMember(request):
         # if tenantMember:
         #     raise HttpResponseBadRequest("Invalid details!!")
         member_password_hash = pbkdf2_sha256.hash(member_password)
-        TenantMember.__keyspace__= tenant.tenant_schema
-        if TenantMember.objects(member_username=member_username):
-            raise HttpResponseBadRequest("Invalid details!!")
-        tenantMember = TenantMember(member_name=member_name, member_username=member_username, member_password=member_password_hash, tenant_id=tenant.tenant_id)
+        #TenantMember.__keyspace__= tenant.tenant_schema
+        if TenantMember.objects.filter(email=member_email):
+            return HttpResponseBadRequest("Invalid details!!")
+        tenantMember = TenantMember(username=member_name, email=member_email, password=member_password_hash, tenant_id=tenant.tenant_id)
         tenantMember.save()
-        context = {"message": 'Tenant member {} added successfully!!'.format(member_username)}
+        context = {"message": 'Tenant member {} added successfully!!'.format(member_email)}
         return render(request, 'enroll/miscellaneous/success.html', context)
 
 def addTenant(request):
