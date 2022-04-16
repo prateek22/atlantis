@@ -47,6 +47,8 @@ class LoginSerializer(serializers.Serializer):
         password = data.get('password', None)
         tenant_id = data.get('tenant_id', None)
         print(email)
+        print(password)
+        print(tenant_id)
 
         if email is None:
             raise serializers.ValidationError(
@@ -58,12 +60,14 @@ class LoginSerializer(serializers.Serializer):
                 'A password is required to log in.'
             )
         
-        if tenant_id is None:
-            raise serializers.ValidationError(
-                'Invalid credentials!!'
-            )
+        # if tenant_id is None:
+        #     raise serializers.ValidationError(
+        #         'Invalid credentials!!'
+        #     )
         
         user = authenticate(email=email, password=password) #, tenant_id=tenant_id
+
+        print(user)
 
         if user is None:
             raise serializers.ValidationError(
