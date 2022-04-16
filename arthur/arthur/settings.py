@@ -32,7 +32,7 @@ ALLOWED_HOSTS = [".edr.api"]
 
 INSTALLED_APPS = [
     'django_cassandra_engine', # For connecting with Cassandra instance; has to be the first entry
-    'enroll.apps.EnrollConfig',
+    'enroll',
     'django_extensions', # required for serving the SSL server
     'django.contrib.humanize',
     'widget_tweaks',
@@ -45,7 +45,11 @@ INSTALLED_APPS = [
     'crispy_forms', # For rendering forms
     'sslserver', # For SSL server
     'rest_framework', # For REST API
-    #'rest_framework.authtoken', # For REST API authentication
+    'rest_framework.authtoken', # For REST API authentication
+    'rest_auth',
+    'allauth',
+    'allauth.account',
+    'rest_auth.registration',
 ]
 
 REST_FRAMEWORK = {
