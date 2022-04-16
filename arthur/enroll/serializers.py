@@ -65,7 +65,7 @@ class LoginSerializer(serializers.Serializer):
         #         'Invalid credentials!!'
         #     )
         
-        user = authenticate(email=email, password=password, tenant_id=tenant_id) #, tenant_id=tenant_id
+        user = authenticate(email=email, password=password) #, tenant_id=tenant_id
 
         print(user)
 
