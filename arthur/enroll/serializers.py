@@ -43,6 +43,7 @@ class LoginSerializer(serializers.Serializer):
         # user in, this means validating that they've provided an email
         # and password and that this combination matches one of the users in
         # our database.
+        print(data)
         email = data.get('email', None)
         password = data.get('password', None)
         tenant_id = data.get('tenant_id', None)
