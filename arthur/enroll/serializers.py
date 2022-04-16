@@ -46,6 +46,7 @@ class LoginSerializer(serializers.Serializer):
         email = data.get('email', None)
         password = data.get('password', None)
         tenant_id = data.get('tenant_id', None)
+        print(email)
 
         if email is None:
             raise serializers.ValidationError(
