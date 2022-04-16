@@ -43,7 +43,7 @@ class LoginView(APIView):
         user['tenant_id'] = tenant.tenant_id
         print(user)
         serializer = self.serializer_class(data=user)
-        print(serializer)
+        print(serializer.data)
         serializer.is_valid(raise_exception=True)
         print("Valid")
 

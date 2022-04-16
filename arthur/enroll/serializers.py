@@ -62,7 +62,7 @@ class LoginSerializer(serializers.Serializer):
                 'Invalid credentials!!'
             )
 
-        user = authenticate(username=email, password=password, tenant_id=tenant_id)
+        user = authenticate(username=email, password=password) #, tenant_id=tenant_id
 
         if user is None:
             raise serializers.ValidationError(
