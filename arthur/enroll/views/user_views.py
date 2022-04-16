@@ -40,6 +40,7 @@ class LoginView(APIView):
             tenant = tenant[0]
         else:
             return HttpResponseBadRequest("{'user':{'message':'Invalid details!!'}}")
+        print(tenant.tenant_id)
         user['tenant_id'] = tenant.tenant_id
         serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
