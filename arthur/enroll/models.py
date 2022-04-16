@@ -83,7 +83,7 @@ class TenantMember(AbstractBaseUser, PermissionsMixin):
 
         This string is used when a `User` is printed in the console.
         """
-        return "{'email' : " + self.email + ", 'tenant_id': " + self.tenant_id + "}"
+        return self.email
 
     @property
     def token(self):
