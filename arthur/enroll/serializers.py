@@ -43,13 +43,9 @@ class LoginSerializer(serializers.Serializer):
         # user in, this means validating that they've provided an email
         # and password and that this combination matches one of the users in
         # our database.
-        print(data)
         email = data.get('email', None)
         password = data.get('password', None)
         tenant_id = data.get('tenant_id', None)
-        print(email)
-        print(password)
-        print(tenant_id)
 
         if email is None:
             raise serializers.ValidationError(
@@ -61,12 +57,12 @@ class LoginSerializer(serializers.Serializer):
                 'A password is required to log in.'
             )
         
-        # if tenant_id is None:
-        #     raise serializers.ValidationError(
-        #         'Invalid credentials!!'
-        #     )
+        if tenant_id is None:
+            raise serializers.ValidationError(
+                'Invalid credentials!!'
+            )
         
-        user = authenticate(email=email, password=password) #, tenant_id=tenant_id
+        user = authenticate(email=email, password=password, tenant_id=tenant_id) #, tenant_id=tenant_id
 
         print(user)
 

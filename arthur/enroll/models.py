@@ -120,7 +120,7 @@ class TenantMember(AbstractBaseUser, PermissionsMixin):
         dt = datetime.now() + timedelta(days=60)
 
         token = jwt.encode({
-            'id': self.pk,
+            'id': self.email,
             'exp': int(dt.strftime('%s'))
         }, settings.SECRET_KEY, algorithm='HS256')
 
