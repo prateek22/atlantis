@@ -70,6 +70,26 @@ class LiveQueryView(APIView):
 class LogsView(APIView):
     pass
 
+class NodeList(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        tenant = Tenant.objects(tenant_domain=hostname_from_request(request))
+        if tenant:
+            tenant = tenant[0]
+        else:
+            return HttpResponseBadRequest("Invalid details!!")
+        tenant_id = tenant.tenant_id
+        node_list = {}
+        nodes = EnrolledNode.objects(tenant_id=tenant_id)
+        if nodes:
+            for node in nodes:
+                node_list[node.node_id.urn.split(':')[-1]] = node.node_info
+        else:
+            node_list['msg'] = 'No registered nodes!!'
+        return JsonResponse(node_list)
+
+
 class RegisterMultipleNodes(APIView):
     permission_classes = (IsAuthenticated,)             # <-- And here
 
