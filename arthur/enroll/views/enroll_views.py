@@ -100,7 +100,7 @@ def enroll(request):
         except Exception:
             return JsonResponse(FAILED_ENROLL_RESPONSE)
         
-        node_key = host.update_node_info(json_data)
+        node_key = host.update_node_info(data)
         response = ENROLL_RESPONSE
         response['node_key'] = node_key
         print(node_key.int)
