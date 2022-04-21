@@ -149,6 +149,7 @@ class EnrolledNode(Model):
     node_secret = columns.Text(required=True)
     node_hash = columns.Text(required=True)
     node_address = columns.Text(required=True, index=True, default='127.0.0.1')
+    node_info = columns.Text()
     
     class _meta:
         app_label = 'enroll'

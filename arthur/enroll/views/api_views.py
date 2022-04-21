@@ -21,18 +21,20 @@ class HelloView(APIView):
         return Response(content)
 
 class RegisterNodeView(APIView):
+    permission_classes = (IsAuthenticated,) 
+
     def post(self,request):
         tenant = Tenant.objects(tenant_domain=hostname_from_request(request))
         if tenant:
             tenant = tenant[0]
         else:
             return HttpResponseBadRequest("Invalid details!!")
-        form = EnrollForm(tenant, request.POST)
-        if form.is_valid():
-            tenant_id = form.cleaned_data['tenant_id']
-            node_system_id = form.cleaned_data['system_id']
-            os = form.cleaned_data['os']
-            arch = form.cleaned_data['arch']
+        data = request.body.decode('utf-8')
+        json_data = json.loads(data)
+        tenant_id = tenant.tenant_id
+        node_system_id = json_data.get('system_id')
+        os = json_data.get('os')
+        arch = json_data.get('arch')
         #Tenant.__keyspace__ = "db"
         tenant = Tenant.objects(tenant_id=tenant_id)
         if tenant:
@@ -46,30 +48,25 @@ class RegisterNodeView(APIView):
         secret = host_enroll.generate_node(node_arch=arch, node_os=os)
         # with open(tenant.tenant_name+'_'+node_system_id+'.secret', 'x') as f:
         #     f.write(secret)
-        # osquery_flag_string = """--tls_hostname="""+tenant.tenant_domain+""".edr.api:8000
-        #         --tls_server_certs=./certs/ca.pem
-        #         --enroll_secret_path=../"""+tenant.tenant_name+'_'+node_system_id+""".secret
-        #         --enroll_tls_endpoint=/enroll/enroll
-        #         --host_identifier=uuid
-        #         --distributed_tls_read_endpoint=/enroll/distributed_read
-        #         --distributed_tls_write_endpoint=/enroll/distributed_write
-        #         --disable_distributed=false
-        #         --distributed_interval=5
-        #         --distributed_plugin=tls
+        osquery_flag_string = """--tls_hostname="""+tenant.tenant_domain+""".edr.api:8000
+                --tls_server_certs=./ca.pem
+                --enroll_secret_path=../"""+tenant.tenant_name+'_'+node_system_id+""".secret
+                --enroll_tls_endpoint=/osquery/enroll
+                --host_identifier=uuid
+                --distributed_tls_read_endpoint=/osquery/distributed_read
+                --distributed_tls_write_endpoint=/osquery/distributed_write
+                --disable_distributed=false
+                --distributed_interval=5
+                --distributed_plugin=tls
 
-        #         --config_plugin=tls
-        #         #--config_refresh=5
-        #         --config_tls_endpoint=/enroll/config
-        #         --logger_plugin=tls
-        #         --logger_tls_endpoint=/enroll/logger"""
-        # with open(tenant.tenant_name+'_'+node_system_id+'.flags', 'x') as f:
-        #     f.write(osquery_flag_string)
-        # zf = zipfile.ZipFile(tenant.tenant_name+'_'+node_system_id+".zip", 'x')
-        # zf.write(tenant.tenant_name+'_'+node_system_id+'.secret')
-        # zf.write(tenant.tenant_name+'_'+node_system_id+'.flags')
-        # zf.close()
-        # zip_file = open(tenant.tenant_name+'_'+node_system_id+".zip", 'rb')
-        return JsonResponse({'secret': secret})
+                --config_plugin=tls
+                #--config_refresh=5
+                --config_tls_endpoint=/osquery/config
+                --logger_plugin=tls
+                --logger_tls_endpoint=/osquery/logger"""
+        cert_file = open('./ca.pem', 'r')
+        cert_string = cert_file.read()
+        return JsonResponse({'secret': secret, 'flag': osquery_flag_string, 'cert': cert_string})
         #return HttpResponse('Generated Secret: ' + secret)
 
 class LiveQueryView(APIView):
