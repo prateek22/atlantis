@@ -22,6 +22,7 @@ class Enrollment():
         self.node_system_id = node_system_id
         if tenant_id != None and node_system_id != None:
             self.node = EnrolledNode.objects(node_system_id=self.node_system_id, tenant_id=self.tenant_id)
+            print("here")
 
     def generate_node(self, node_os, node_arch):
         if self.node:
