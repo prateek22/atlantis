@@ -142,7 +142,7 @@ class Tenant(Model):
 
 class EnrolledNode(Model):
     node_id = columns.UUID(primary_key=True, default=uuid.uuid4)
-    tenant_id = columns.UUID(required=True, primary_key=True, partition_key=True, index=True) #columns.UserDefinedType(user_type=Tenant)
+    tenant_id = columns.UUID(required=True, primary_key=True, partition_key=True) #columns.UserDefinedType(user_type=Tenant)
     node_system_id = columns.Text(required=True, index=True)
     node_os = columns.Text(required=True)
     node_arch = columns.Text(required=True)
