@@ -35,7 +35,6 @@ class RegisterNodeView(APIView):
         node_system_id = json_data.get('system_id')
         os = json_data.get('os')
         arch = json_data.get('arch')
-        print(json_data)
         #Tenant.__keyspace__ = "db"
         try:
             host_enroll = Enrollment(tenant_id=tenant_id, node_system_id=node_system_id)

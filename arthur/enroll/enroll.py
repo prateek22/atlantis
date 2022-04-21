@@ -28,12 +28,11 @@ class Enrollment():
             self.node = self.node[0]
             return self.node.node_secret
         else:
-            m = hashlib.sha256()
-            salt = os.urandom(32)
+            # m = hashlib.sha256()
+            # salt = os.urandom(32)
             secret = '{"node_system_id":"' + self.node_system_id + '", "tenant_id": "' + self.tenant_id.urn.split(':')[-1] + '", "secret":"'+ self.generate_node_secret() + '"}'
             encoded_secret = base64.b64encode(secret.encode())
             encoded_secret_string = encoded_secret.decode('utf-8')
-            print(type(encoded_secret))
             node_hash = pbkdf2_sha256.hash(encoded_secret_string)
             #print(host_hash.decode('ascii'))
             tenant = Tenant.objects(tenant_id=self.tenant_id)
@@ -49,9 +48,9 @@ class Enrollment():
         secret = secrets.token_hex(16)
         return secret
 
-    def update_node_address(self, address):
+    def update_node_info(self, node_info):
 
-        self.node.update(node_address = address)
+        self.node.update(node_info = node_info)
         return self.node.node_id
 
     def validate_enroll_secret(self, enroll_secret):
@@ -70,8 +69,8 @@ class Enrollment():
         else:
             return self.node
 
-    def validate_node(self, address, node_id):
-        node = EnrolledNode.objects(node_address=address)
+    def validate_node(self, node_id):
+        node = EnrolledNode.objects(node_id=node_id)
         if node:
             self.node = node[0]
             return self.node

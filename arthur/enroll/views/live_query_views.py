@@ -43,7 +43,7 @@ def distributed_read(request):
     #exec_query = live_query.objects(query=query)
     #exec_query = DIST_QUERY[queries][id1]
     host = Enrollment(tenant_id=None, node_system_id=None)
-    node = host.validate_node(address, node_id)
+    node = host.validate_node(node_id)
     if not node:
         return JsonResponse(FAILED_ENROLL_RESPONSE)
 
@@ -76,7 +76,7 @@ def distributed_write(request):
     node_id = json_data.get('node_key')
     
     host = Enrollment(tenant_id=None, node_system_id=None)
-    node = host.validate_node(address, node_id)
+    node = host.validate_node(node_id)
     if not node:
         return JsonResponse(FAILED_ENROLL_RESPONSE)
 

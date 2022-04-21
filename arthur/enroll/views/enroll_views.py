@@ -92,7 +92,6 @@ def enroll(request):
         json_data = json.loads(data)
         print(json_data)
         enroll_secret = json_data.get('enroll_secret')
-        address = request.META.get('REMOTE_ADDR')
         host = Enrollment(tenant_id=None, node_system_id=None)
         try:
             node = host.validate_enroll_secret(enroll_secret)
@@ -101,7 +100,7 @@ def enroll(request):
         except Exception:
             return JsonResponse(FAILED_ENROLL_RESPONSE)
         
-        node_key = host.update_node_address(address)
+        node_key = host.update_node_info(json_data)
         response = ENROLL_RESPONSE
         response['node_key'] = node_key
         print(node_key.int)
@@ -120,7 +119,7 @@ def config(request):
         node_id = json_data.get('node_key')
 
         host = Enrollment(tenant_id=None, node_system_id=None)
-        node = host.validate_node(address, node_id)
+        node = host.validate_node(node_id)
         if not node:
             return JsonResponse(FAILED_ENROLL_RESPONSE)
 
@@ -139,7 +138,7 @@ def logger(request):
     node_id = json_data.get('node_key')
 
     host = Enrollment(tenant_id=None, node_system_id=None)
-    node = host.validate_node(address, node_id)
+    node = host.validate_node(node_id)
     if not node:
         return JsonResponse(FAILED_ENROLL_RESPONSE)
 
