@@ -41,7 +41,7 @@ class JWTAuthentication(authentication.BaseAuthentication):
             raise exceptions.AuthenticationFailed(msg)
 
         try:
-            user = TenantMember.objects.get(pk=payload['id'])
+            user = TenantMember.objects.get(email=payload['id'])
         except TenantMember.DoesNotExist:
             msg = 'No user matching this token was found.'
             raise exceptions.AuthenticationFailed(msg)
