@@ -58,8 +58,8 @@ def register(request):
         with open(tenant.tenant_name+'_'+node_system_id+'.secret', 'x') as f:
             f.write(secret)
         osquery_flag_string = """--tls_hostname="""+tenant.tenant_domain+""".edr.api:8000
-                --tls_server_certs=./certs/ca.pem
-                --enroll_secret_path=../"""+tenant.tenant_name+'_'+node_system_id+""".secret
+                --tls_server_certs=./ca.pem
+                --enroll_secret_path=./"""+tenant.tenant_name+'_'+node_system_id+""".secret
                 --enroll_tls_endpoint=/enroll/enroll
                 --host_identifier=uuid
                 --distributed_tls_read_endpoint=/enroll/distributed_read
@@ -78,6 +78,7 @@ def register(request):
         zf = zipfile.ZipFile(tenant.tenant_name+'_'+node_system_id+".zip", 'x')
         zf.write(tenant.tenant_name+'_'+node_system_id+'.secret')
         zf.write(tenant.tenant_name+'_'+node_system_id+'.flags')
+        zf.write('ca.pem')
         zf.close()
         zip_file = open(tenant.tenant_name+'_'+node_system_id+".zip", 'rb')
         return FileResponse(zip_file)
@@ -142,14 +143,13 @@ def logger(request):
     if not node:
         return JsonResponse(FAILED_ENROLL_RESPONSE)
 
-    if results and log_type == 'result':
-        kfk(results)
-        with open(LOG_OUTPUT_FILE, 'a') as f:
-            for result in results:
-                result['address'] = address
-                f.write(json.dumps(result) + '\n')
-
-    return JsonResponse(EMPTY_RESPONSE)
+    if logs and log_type == 'result':
+        #kfk(results)
+        for log in logs:
+            new_log = logs(node_id=node_id, log_type=log['name'], log_data=json.dumps(log['columns']), log_ts=log['calendatTime'], log_action='action')
+            new_log.save()
+    return JsonResponse({'msg': 'Saved the logs!!'})
+    #return JsonResponse(EMPTY_RESPONSE)
 
 @csrf_exempt
 def alert(request):
