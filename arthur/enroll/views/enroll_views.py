@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .kafka_views import kfk
 
 # App imports
-from ..models import Tenant, alerts
+from ..models import Logs, Tenant, alerts
 from ..forms.enrollForm import EnrollForm
 from ..enroll import Enrollment
 from ..osqueryResponses import *
@@ -150,7 +150,7 @@ def logger(request):
             print(log['action'])
             print(log['calendarTime'])
             print(json.dumps(log['columns']))
-            new_log = logs(node_id=node_id, log_type=log['name'], log_data=json.dumps(log['columns']), log_ts=log['calendarTime'], log_action=log['action'])
+            new_log = Logs(node_id=node_id, log_type=log['name'], log_data=json.dumps(log['columns']), log_ts=log['calendarTime'], log_action=log['action'])
             new_log.save()
     return JsonResponse({'msg': 'Saved the logs!!'})
     #return JsonResponse(EMPTY_RESPONSE)

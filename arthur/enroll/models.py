@@ -186,7 +186,7 @@ class dist_query_result(Model):
     def __str__(self):
       return self.node_keys
 
-class logs(Model):
+class Logs(Model):
     log_id = columns.UUID(primary_key=True, default=uuid.uuid4, index=True)
     node_id = columns.UUID(partition_key=True, primary_key=True)
     log_type = columns.Text(max_length=50, index=True)
