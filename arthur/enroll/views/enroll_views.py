@@ -134,7 +134,7 @@ def logger(request):
     json_data = json.loads(data)
     print(json_data)
     address = request.META.get('REMOTE_ADDR')
-    results = json_data.get('data')
+    logs = json_data.get('data')
     log_type = json_data.get('log_type')
     node_id = json_data.get('node_key')
 
