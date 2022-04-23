@@ -146,7 +146,7 @@ def logger(request):
     if logs and log_type == 'result':
         #kfk(results)
         for log in logs:
-            new_log = logs(node_id=node_id, log_type=log['name'], log_data=json.dumps(log['columns']), log_ts=log['calendartTime'], log_action='action')
+            new_log = logs(node_id=node_id, log_type=log['name'], log_data=json.dumps(log['columns']), log_ts=log['calendarTime'], log_action='action')
             new_log.save()
     return JsonResponse({'msg': 'Saved the logs!!'})
     #return JsonResponse(EMPTY_RESPONSE)
